@@ -29,7 +29,6 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
     var dishList = [[String:Any]]()
     var etaArray = [String]()
-    var eta : Int = 0
     var subTotal : Int = 0
     var discount : Double = 0
     var total : Double = 0
