@@ -1,0 +1,64 @@
+PODS:
+  - Alamofire (4.9.1)
+  - AlamofireImage (3.6.0):
+    - Alamofire (~> 4.9)
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
+  - DLRadioButton (1.4.12)
+  - ImageSlideshow (1.8.1):
+    - ImageSlideshow/Core (= 1.8.1)
+  - ImageSlideshow/Alamofire (1.8.1):
+    - AlamofireImage (~> 3.0)
+    - ImageSlideshow/Core
+  - ImageSlideshow/Core (1.8.1)
+  - IQKeyboardManagerSwift (6.5.4)
+  - Kingfisher (4.10.1)
+  - ObjectMapper (3.5.1)
+  - SideMenuSwift (2.0.3)
+  - SVProgressHUD (2.2.5)
+  - SwiftyJSON (5.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - ChameleonFramework
+  - DLRadioButton (~> 1.4)
+  - ImageSlideshow (~> 1.6)
+  - ImageSlideshow/Alamofire
+  - IQKeyboardManagerSwift
+  - Kingfisher
+  - ObjectMapper
+  - SideMenuSwift
+  - SVProgressHUD
+  - SwiftyJSON
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireImage
+    - ChameleonFramework
+    - DLRadioButton
+    - ImageSlideshow
+    - IQKeyboardManagerSwift
+    - Kingfisher
+    - ObjectMapper
+    - SideMenuSwift
+    - SVProgressHUD
+    - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AlamofireImage: be9963c6582d68b39e89191f64c82a7d7bf40fdd
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
+  DLRadioButton: d7c4e225ed0e8013cef7be61455230c7557ad7c1
+  ImageSlideshow: 634865d7d4e96f21e3830a31b51bde768cc94cea
+  IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
+  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
+  ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
+  SideMenuSwift: 5c2b1496544ce3f1f08f4dddf4810eaac49f543d
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+
+PODFILE CHECKSUM: a70b9b6a8cc2cde0ee9922f44c714922ce399407
+
+COCOAPODS: 1.5.3
