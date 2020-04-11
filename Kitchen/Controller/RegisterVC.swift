@@ -110,13 +110,11 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
 
     @IBAction func registerButtonClicked(_ sender: UIButton) {
         
-        self.view.isUserInteractionEnabled = false
         let providedEmailAddress = emailTF.text
         let isEmailAddressValid = isValidEmailAddress(emailAddressString: providedEmailAddress!)
         
         if fullNameTF.text == "" || emailTF.text == "" || mobileNumberTF.text == "" || birthdayDateTF.text == "" || passwordTF.text == "" || confirmPasswordTF.text == "" || locationPicker.text == "" {
             
-            dismissSVProgress()
             placeholder(textFields: fullNameTF, placeHolderName: "Full Name", color: .red)
             placeholder(textFields: emailTF, placeHolderName: "Email", color: .red)
             placeholder(textFields: mobileNumberTF, placeHolderName: "Mobile Number", color: .red)
@@ -132,17 +130,14 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                 
                 if (mobileNumberTF.text?.count)! > 11 || (mobileNumberTF.text?.count)! < 11 {
                     
-                    dismissSVProgress()
                     displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number")
                     
                 } else if (passwordTF.text?.count)! < 8 || (passwordTF.text?.count)! > 12 {
                     
-                    dismissSVProgress()
                     displayAlertMessage(title: "", messageToDisplay: "Password lenght must be minimum of 8 characters long & maximum of 12 characters long.")
                     
                 } else if passwordTF.text != confirmPasswordTF.text {
                     
-                    dismissSVProgress()
                     displayAlertMessage(title: "", messageToDisplay: "Entered passwords did not match.")
                     
                 } else {
@@ -155,21 +150,17 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                         
                     let alert = UIAlertController(title: "Warning", message: "Available in Maadi only, Are you sure you want to register with this selected location?" , preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
-                        self.dismissSVProgress()
                         self.register()
                     }
                     let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
                     alert.addAction(cancel)
                     alert.addAction(okAction)
                     self.present(alert, animated: true, completion: nil)
-                    self.dismissSVProgress()
-
                     }
                 }
                                 
             } else {
                 
-                dismissSVProgress()
                 displayAlertMessage(title: "", messageToDisplay: "Please enter a valid email.")
             }
         }
@@ -216,6 +207,7 @@ extension RegisterVC {
     
     func register() {
         
+        view.isUserInteractionEnabled = false
         SVProgressHUD.show()
         DispatchQueue.main.async {
             

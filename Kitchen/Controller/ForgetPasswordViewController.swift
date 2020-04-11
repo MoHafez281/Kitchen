@@ -33,20 +33,16 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     
     
     @IBAction func sendButtonClicked(_ sender: UIButton) {
-        
-        self.view.isUserInteractionEnabled = false
-        
+                
         if(mobileNumberView.isHidden == false) {
             
             if((enterMobileNumber.text?.isEmpty)!) {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Please, Enter your phone number.")
-                dismissSVProgress()
                 
             } else if (enterMobileNumber.text?.count)! > 11 || (enterMobileNumber.text?.count)! < 11 {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number" )
-                dismissSVProgress()
                 
             } else {
                 
@@ -58,20 +54,22 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
                 alert.addAction(cancel)
                 alert.addAction(okAction)
                 self.present(alert, animated: true, completion: nil)
-                dismissSVProgress()
             }
             
         } else {
             
             if((authCodeTF.text?.isEmpty)!){
+                
                 displayAlertMessage(title: "", messageToDisplay: "Please, Enter the authentication code you recieved." )
-                dismissSVProgress()
+                
             } else if ((enterNewPasswordTF.text?.isEmpty)!) {
+                
                 displayAlertMessage(title: "", messageToDisplay: "Please, enter your new password" )
-                dismissSVProgress()
+                
             } else if (enterNewPasswordTF.text?.count)! < 8 || (enterNewPasswordTF.text?.count)! > 12  {
+                
                 displayAlertMessage(title: "", messageToDisplay: "Password lenght must be minimum of 8 characters long & maximum of 12 characters long." )
-                dismissSVProgress()
+                
             } else {
                 authCode()
             }
@@ -94,6 +92,7 @@ extension ForgetPasswordViewController {
     func forgotPassword() {
         
         SVProgressHUD.show()
+        self.view.isUserInteractionEnabled = false
         DispatchQueue.main.async {
             
             let params  = ["phone_number" : "2\(self.enterMobileNumber.text!)" ] as [String: AnyObject]
@@ -110,12 +109,13 @@ extension ForgetPasswordViewController {
                     
                     let jsonDict = JSON as? NSDictionary
                     let forgotPasswordResponse = jsonDict!["error"]
-//                  let forgotPasswordMessage = jsonDict?["message"]
+                    let forgotPasswordMessage = jsonDict?["status"]
                     
                     if (forgotPasswordResponse as? Int == 1) {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred")
+                        self.displayAlertMessage(title: "Error", messageToDisplay: forgotPasswordMessage as! String)
+//                      self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred, try again later")
                         
                     } else {
                         
@@ -132,6 +132,7 @@ extension ForgetPasswordViewController {
     func authCode() {
         
         SVProgressHUD.show()
+        self.view.isUserInteractionEnabled = false
         DispatchQueue.main.async {
             
             let params  = ["password" : self.enterNewPasswordTF.text! ,"mobile" : self.enterMobileNumber.text! , "rand": self.authCodeTF.text! ] as [String: AnyObject]
@@ -151,8 +152,7 @@ extension ForgetPasswordViewController {
             
                     if (authCodeResponse as? Int == 1) {
                         self.dismissSVProgress()
-                       // self.displayAlertMessage(title: "Error", messageToDisplay: authCodeMessage as! String)
-                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred")
+                        self.displayAlertMessage(title: "Error", messageToDisplay: authCodeMessage as! String)
                         
                     } else {
                         
