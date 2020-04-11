@@ -147,10 +147,26 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                     
                 } else {
                     
-                    SVProgressHUD.show()
-                    register()
+                    if locationPicker.text == "Maadi" {
+
+                        self.register()
+                        
+                    } else {
+                        
+                    let alert = UIAlertController(title: "Warning", message: "Available in Maadi only, Are you sure you want to register with this selected location?" , preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
+                        self.dismissSVProgress()
+                        self.register()
+                    }
+                    let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+                    alert.addAction(cancel)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: true, completion: nil)
+                    self.dismissSVProgress()
+
+                    }
                 }
-                
+                                
             } else {
                 
                 dismissSVProgress()
@@ -200,6 +216,7 @@ extension RegisterVC {
     
     func register() {
         
+        SVProgressHUD.show()
         DispatchQueue.main.async {
             
             let params  = ["name" : self.fullNameTF.text! , "email" : self.emailTF.text! ,"password" : self.passwordTF.text! , "phone" : self.mobileNumberTF.text! , "birthday" : self.birthdayDateTF.text! , "location" : self.locationPicker.text! , "job" : self.jobTF.text!] as [String: AnyObject]

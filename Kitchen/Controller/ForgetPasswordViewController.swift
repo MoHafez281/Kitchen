@@ -34,7 +34,6 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     
     @IBAction func sendButtonClicked(_ sender: UIButton) {
         
-//        SVProgressHUD.show()
         self.view.isUserInteractionEnabled = false
         
         if(mobileNumberView.isHidden == false) {
@@ -116,7 +115,7 @@ extension ForgetPasswordViewController {
                     if (forgotPasswordResponse as? Int == 1) {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "", messageToDisplay: "Some error occurred")
+                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred")
                         
                     } else {
                         
