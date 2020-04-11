@@ -4,7 +4,7 @@
 //
 //  Created by Mohamed Hafez on 12/26/18.
 //  Copyright © 2018 Mohamed Hafez. All rights reserved.
-// YA ALBI ANA
+
 
 import UIKit
 import ObjectMapper
@@ -22,6 +22,7 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Yaaaaaaaaaaaa
         mobileNumberView.isHidden = false
         self.enterMobileNumber.delegate = self
         
