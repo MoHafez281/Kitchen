@@ -151,7 +151,8 @@ extension ForgetPasswordViewController {
             
                     if (authCodeResponse as? Int == 1) {
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "Error", messageToDisplay: authCodeMessage as! String)
+                       // self.displayAlertMessage(title: "Error", messageToDisplay: authCodeMessage as! String)
+                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred")
                         
                     } else {
                         
