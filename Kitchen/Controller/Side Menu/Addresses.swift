@@ -39,16 +39,16 @@ class Addresses: UIViewController {
     }
     
     @IBAction func backButtonClicked(_ sender: UIBarButtonItem) {
-        if(self.navigationController!.viewControllers.count > 1){
+        if(self.navigationController!.viewControllers.count > 1) {
             self.navigationController?.popViewController(animated: true)
-        }else {
+        } else {
             performSegue(withIdentifier: "backToSettings", sender: nil)
         }
     }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "EditAddress"){
+        if(segue.identifier == "EditAddress") {
             let vc = segue.destination as! AddNewAddress
             if let selectedAddress = sender as? AdressModel {
                 vc.selectedAddress = selectedAddress

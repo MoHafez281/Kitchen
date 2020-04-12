@@ -19,8 +19,7 @@ class LoginPopup: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
-        
+
     }
     
     @IBAction func dismissPopup(_ sender: Any) {
@@ -30,7 +29,6 @@ class LoginPopup: UIViewController {
     @IBAction func registerButtonClicked(_ sender: UIButton) {
         
         performSegue(withIdentifier: "goToRegister", sender: self)
-        
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {

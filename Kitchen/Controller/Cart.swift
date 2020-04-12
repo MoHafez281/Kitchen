@@ -106,7 +106,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         promoCodeTF.isHidden = true
         promoCodeView.isHidden = true
         promoCodeImage.isHidden = true
@@ -129,19 +129,21 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        navigationController?.setNavigationBarHidden(false, animated: true)
+//    }
     
     @IBAction func backButtonClicked(_ sender: UIButton) {
+ //       performSegue(withIdentifier: "goToKitchen", sender: self)
         appDelegate.setRoot(storyBoard: .main, vc: .home)
+        animationWithAppDelegate()
     }
     
     @IBAction func removeButtonClicked(_ sender: UIButton) {
         
         if User.shared.cart.count < 1 {
-            self.displayAlertMessage(title: "Alert", messageToDisplay: "Cart already empty")
+            self.displayAlertMessage(title: "", messageToDisplay: "Cart already empty")
         } else {
             
             let alert = UIAlertController(title: "Warning", message: "Do you really want to empty your cart?" , preferredStyle: .alert)
@@ -161,13 +163,20 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     @IBAction func proceedButtonPressed(_ sender: Any) {
         
         if(User.shared.isRegistered()) {
+            
             if User.shared.cart.count == 0 {
-            displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
+                displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
             } else {
-            self.performSegue(withIdentifier: "goToConfirmPopup", sender: self)
+                self.performSegue(withIdentifier: "goToConfirmPopup", sender: self)
             }
+            
         } else {
-            self.performSegue(withIdentifier: "goToLoginPopup", sender: self)
+            
+            if User.shared.cart.count == 0 {
+                displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
+            } else {
+                self.performSegue(withIdentifier: "goToLoginPopup", sender: self)
+            }
         }
     }
     
@@ -309,7 +318,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
             if (User.shared.isRegistered()) {
                 checkPromoCode()
             } else {
-                displayAlertMessage(title: "Error", messageToDisplay: "")
+                displayAlertMessage(title: "", messageToDisplay: "You must login first.")
                 isChecked = false
             }
             
@@ -318,7 +327,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
             if (User.shared.isRegistered()) {
                 pointsCalculation()
             } else {
-                displayAlertMessage(title: "Error", messageToDisplay: "")
+                displayAlertMessage(title: "", messageToDisplay: "You must login first.")
                 isPointsChecked = false
             }
             

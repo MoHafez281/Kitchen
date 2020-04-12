@@ -40,7 +40,6 @@ class SideBar: UIViewController {
         if(User.shared.isRegistered()){
             self.logOutButton.setTitle("Logout", for: .normal)
         } else {
-
             self.profileButton.setTitle("Register", for: .normal)
             self.favoritesButton.setTitle("Login", for: .normal)
             self.myOrdersButton.setTitle("Terms & Conditions", for: .normal)
@@ -59,24 +58,22 @@ class SideBar: UIViewController {
     
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
         if(User.shared.isRegistered()){
-            
-            SVProgressHUD.show()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                User.shared.logout()
-                User.shared.saveData()
-                appDelegate.setRoot(storyBoard: .main, vc: .login)
-            }
-
-        } else {
-        appDelegate.setRoot(storyBoard: .main, vc: .login)
+            let alert = UIAlertController(title: "Logout", message: "Are you sure you want to logout" , preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
+                    SVProgressHUD.show()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        User.shared.logout()
+                        User.shared.saveData()
+                        appDelegate.setRoot(storyBoard: .main, vc: .login)
+                        self.animationWithAppDelegate()
+                    }
+                }
+            let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
         }
     }
-    
-
-    
-//    @IBAction func homeButtonClicked(_ sender: UIButton) {
-//        appDelegate.setRoot(storyBoard: .main, vc: .home)
-//    }
     
     @IBAction func FavButtonClicked(_ sender: UIButton) {
 
@@ -84,14 +81,14 @@ class SideBar: UIViewController {
             performSegue(withIdentifier: "goToFavorites", sender: self)
         } else {
             appDelegate.setRoot(storyBoard: .main, vc: .login)
+            animationWithAppDelegate()
         }
       }
     
     @IBAction func profileButtonClicked(_ sender: UIButton) {
-        
+
         if(User.shared.isRegistered()){
             performSegue(withIdentifier: "goToProfile", sender: self)
-
         } else {
             performSegue(withIdentifier: "goToRegister", sender: self)
         }
@@ -125,7 +122,6 @@ class SideBar: UIViewController {
                 if(error != nil) {
                     
                     self.dismissSVProgress()
-                 //   self.displayAlertMessage(title: "Error", messageToDisplay: "Connection Error")
                     
                 } else {
                     

@@ -22,10 +22,8 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Yaaaaaaaaaaaa
         mobileNumberView.isHidden = false
         self.enterMobileNumber.delegate = self
-        
     }
     
     @IBAction func dismissClicked(_ sender: UIButton) {
@@ -39,11 +37,11 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
             
             if((enterMobileNumber.text?.isEmpty)!) {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please, Enter your phone number.")
+                displayAlertMessage(title: "", messageToDisplay: "Please Enter your phone number.")
                 
             } else if (enterMobileNumber.text?.count)! > 11 || (enterMobileNumber.text?.count)! < 11 {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number" )
+                displayAlertMessage(title: "", messageToDisplay: "Please enter a valid phone number." )
                 
             } else {
                 
@@ -61,11 +59,11 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
             
             if((authCodeTF.text?.isEmpty)!){
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please, Enter the authentication code you recieved." )
+                displayAlertMessage(title: "", messageToDisplay: "Please enter the authentication code you recieved." )
                 
             } else if ((enterNewPasswordTF.text?.isEmpty)!) {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please, enter your new password" )
+                displayAlertMessage(title: "", messageToDisplay: "Please enter your new password." )
                 
             } else if (enterNewPasswordTF.text?.count)! < 8 || (enterNewPasswordTF.text?.count)! > 12  {
                 
@@ -115,15 +113,13 @@ extension ForgetPasswordViewController {
                     if (forgotPasswordResponse as? Int == 1) {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "Error", messageToDisplay: forgotPasswordMessage as! String)
-//                      self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred, try again later")
+                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred, try again later")
                         
                     } else {
                         
                         self.dismissSVProgress()
                         self.mobileNumberView.isHidden = true
                         self.sendButton.setTitle("Reset", for: .normal)
-                        
                     }
                 }
             }
@@ -152,14 +148,20 @@ extension ForgetPasswordViewController {
                     let authCodeMessage = jsonDict?["message"]
             
                     if (authCodeResponse as? Int == 1) {
+                        
                         self.dismissSVProgress()
                         self.displayAlertMessage(title: "Error", messageToDisplay: authCodeMessage as! String)
                         
                     } else {
                         
                         self.dismissSVProgress()
-                        self.dismiss(animated: true)
-                        
+                        let alert = UIAlertController(title: "Forget Password", message: "Password Changed Successfully" , preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                            self.dismiss(animated: true) {
+                                self.dismiss(animated: true)
+                            }
+                        }))
+                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }

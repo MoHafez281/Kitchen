@@ -79,7 +79,6 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
             cartButton.image = #imageLiteral(resourceName: "cart")
         }
         navigationController?.setNavigationBarHidden(false, animated: false)
-    
     }
     
     @IBAction func menuButton(_ sender: Any) {

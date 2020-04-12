@@ -36,5 +36,20 @@ extension UIViewController {
 //        self.show(vc!, sender: self)
     }
     
-    
+    func animationWithAppDelegate() {
+        //https://stackoverflow.com/questions/41144523/swap-rootviewcontroller-with-animation
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
+        // A mask of options indicating how you want to perform the animations.
+        let options: UIView.AnimationOptions = .transitionCrossDissolve
+        // The duration of the transition animation, measured in seconds.
+        let duration: TimeInterval = 0.3
+        // Creates a transition animation.
+        // Though `animations` is optional, the documentation tells us that it must not be nil.
+        UIView.transition(with: window, duration: duration, options: options, animations: {}, completion:
+        { completed in
+            // maybe do something on completion here
+        })
+    }
 }

@@ -66,12 +66,18 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         dateFormatter.dateFormat = "dd/MM/yyyy"
         birthdayDateTF.text = dateFormatter.string(from: datePicker.date)
     }
-    
-    //To dismiss presentation controller and view as full view
-     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-         
-         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
-     }
+
+    @IBAction func backButtonPressed(_ sender: Any) {
+            
+        dismiss(animated: true, completion: nil)
+    }
+
+
+    //To dismiss presentation controller
+//     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+//         
+//         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
+//     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -125,12 +131,11 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
             
         } else if (emailTF.text?.count)! > 0  {
             
-            if isEmailAddressValid
-            {
+            if isEmailAddressValid {
                 
                 if (mobileNumberTF.text?.count)! > 11 || (mobileNumberTF.text?.count)! < 11 {
                     
-                    displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number")
+                    displayAlertMessage(title: "", messageToDisplay: "Please enter a valid phone number.")
                     
                 } else if (passwordTF.text?.count)! < 8 || (passwordTF.text?.count)! > 12 {
                     
@@ -151,7 +156,7 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                     let alert = UIAlertController(title: "Warning", message: "Available in Maadi only, Are you sure you want to register with this selected location?" , preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
                         self.register()
-                    }
+                        }
                     let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
                     alert.addAction(cancel)
                     alert.addAction(okAction)
@@ -175,7 +180,6 @@ extension RegisterVC {
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
         }
-        
         return false
     }
     
@@ -189,8 +193,7 @@ extension RegisterVC {
             let nsString = emailAddressString as NSString
             let results = regex.matches(in: emailAddressString, range: NSRange(location: 0, length: nsString.length))
             
-            if results.count == 0
-            {
+            if results.count == 0 {
                 returnValue = false
             }
             
@@ -242,11 +245,11 @@ extension RegisterVC {
                         let alert = UIAlertController(title: "Register", message: "Registration Done Successfully" , preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                             
-                            self.dismiss(animated: true) {
-                                
-                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
-                                self.performSegue(withIdentifier: "goToKitchen", sender: self)
-                            }                            
+                            self.performSegue(withIdentifier: "goToKitchen", sender: self)
+//                            self.dismiss(animated: true) {
+//                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
+//
+//                            }
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }
