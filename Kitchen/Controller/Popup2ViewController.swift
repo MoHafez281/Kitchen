@@ -163,7 +163,7 @@ class Popup2ViewController: UIViewController {
             }
             
         } else {
-            let alert = UIAlertController(title: "Warning", message: "You must login first" , preferredStyle: .alert)
+            let alert = UIAlertController(title: "", message: "You must login first." , preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(okAction)
             present(alert, animated: true, completion: nil)

@@ -18,7 +18,6 @@ class Settings: UIViewController {
     }
     
     @IBAction func sideBarTapped(_ sender: Any) {
-        
         self.sideMenuController?.revealMenu()
     }
 }

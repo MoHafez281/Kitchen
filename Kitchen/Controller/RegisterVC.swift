@@ -13,7 +13,7 @@ import Alamofire
 import SwiftyJSON
 import ObjectMapper
 
-class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource , UITextFieldDelegate , UIAdaptivePresentationControllerDelegate{
+class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource , UITextFieldDelegate {
     
     @IBOutlet weak var fullNameTF: UITextField!
     @IBOutlet weak var emailTF: UITextField!
@@ -51,8 +51,6 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         let pickerView = UIPickerView()
         pickerView.delegate = self
         locationPicker.inputView = pickerView
-        
-        presentationController?.delegate = self
     }
     
      // DatePiceker View
@@ -61,23 +59,14 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
     }
     // DatePiceker View
     @objc func dateChanged(datePicker: UIDatePicker) {
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         birthdayDateTF.text = dateFormatter.string(from: datePicker.date)
     }
 
     @IBAction func backButtonPressed(_ sender: Any) {
-            
         dismiss(animated: true, completion: nil)
     }
-
-
-    //To dismiss presentation controller
-//     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-//         
-//         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
-//     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -148,13 +137,13 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                 } else {
                     
                     if locationPicker.text == "Maadi" {
-
                         self.register()
                         
                     } else {
                         
                     let alert = UIAlertController(title: "Warning", message: "Available in Maadi only, Are you sure you want to register with this selected location?" , preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
+                        
                         self.register()
                         }
                     let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
@@ -184,7 +173,6 @@ extension RegisterVC {
     }
     
     func isValidEmailAddress(emailAddressString: String) -> Bool {
-        
         var returnValue = true
         let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
         
@@ -201,8 +189,7 @@ extension RegisterVC {
             print("invalid regex: \(error.localizedDescription)")
             returnValue = false
         }
-
-        return  returnValue
+     return  returnValue
     }
 }
 
@@ -246,10 +233,6 @@ extension RegisterVC {
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                             
                             self.performSegue(withIdentifier: "goToKitchen", sender: self)
-//                            self.dismiss(animated: true) {
-//                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
-//
-//                            }
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }

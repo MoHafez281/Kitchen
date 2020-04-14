@@ -16,6 +16,7 @@ import ObjectMapper
 class SideBar: UIViewController {
 
     var userPoints : Int = 0
+    static var checkVisiableView : Int = 1
     
     @IBOutlet weak var leftConst: NSLayoutConstraint!
     @IBOutlet weak var pointsNameLabel: UILabel!
@@ -37,9 +38,12 @@ class SideBar: UIViewController {
         
         leftConst.constant = self.view.frame.width / 3
         
-        if(User.shared.isRegistered()){
+        if(User.shared.isRegistered()) {
+            
             self.logOutButton.setTitle("Logout", for: .normal)
+            
         } else {
+            
             self.profileButton.setTitle("Register", for: .normal)
             self.favoritesButton.setTitle("Login", for: .normal)
             self.myOrdersButton.setTitle("Terms & Conditions", for: .normal)
@@ -56,14 +60,90 @@ class SideBar: UIViewController {
         getPoints()
     }
     
+    @IBAction func homeButtonPressed(_ sender: UIButton) {
+        
+        if SideBar.checkVisiableView == 1 {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
+        } else {
+            performSegue(withIdentifier: "goToKitchen", sender: self)
+        }
+        SideBar.checkVisiableView = 1
+    }
+    
+    @IBAction func profileButtonClicked(_ sender: UIButton) {
+        
+        if(User.shared.isRegistered()) {
+            if SideBar.checkVisiableView == 2 {
+               sideMenuController?.hideMenu(animated: true, completion: nil)
+            } else {
+               performSegue(withIdentifier: "goToProfile", sender: self)
+            }
+            SideBar.checkVisiableView = 2
+        } else {
+            performSegue(withIdentifier: "goToRegister", sender: self)
+        }
+    }
+    
+    @IBAction func FavButtonClicked(_ sender: UIButton) {
+        if(User.shared.isRegistered()) {
+            if SideBar.checkVisiableView == 3 {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
+            } else {
+                performSegue(withIdentifier: "goToFavorites", sender: self)
+            }
+            SideBar.checkVisiableView = 3
+        } else {
+            appDelegate.setRoot(storyBoard: .main, vc: .login)
+            SideBar.checkVisiableView = 1
+            animationWithAppDelegate()
+        }
+      }
+    
+    @IBAction func myOrdersButtonClicked(_ sender: UIButton) {
+        if(User.shared.isRegistered()) {
+            if SideBar.checkVisiableView == 4 {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
+            } else {
+                performSegue(withIdentifier: "goToMyOrders", sender: self)
+            }
+            SideBar.checkVisiableView = 4
+        } else {
+            if SideBar.checkVisiableView == 6 {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
+            } else {
+                performSegue(withIdentifier: "goToTermsAndConditions", sender: self)
+            }
+            SideBar.checkVisiableView = 6
+        }
+    }
+    
+    @IBAction func settingsButtonClicked(_ sender: UIButton) {
+        if SideBar.checkVisiableView == 5 {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
+        } else {
+            performSegue(withIdentifier: "goToSettings", sender: self)
+        }
+        SideBar.checkVisiableView = 5
+    }
+    
+    @IBAction func termsButtonClicked(_ sender: UIButton) {
+        if SideBar.checkVisiableView == 6 {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
+        } else {
+            performSegue(withIdentifier: "goToTermsAndConditions", sender: self)
+        }
+        SideBar.checkVisiableView = 6
+    }
+    
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        if(User.shared.isRegistered()){
+        if(User.shared.isRegistered()) {
             let alert = UIAlertController(title: "Logout", message: "Are you sure you want to logout" , preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
                     SVProgressHUD.show()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                         User.shared.logout()
                         User.shared.saveData()
+                        SideBar.checkVisiableView = 1
                         appDelegate.setRoot(storyBoard: .main, vc: .login)
                         self.animationWithAppDelegate()
                     }
@@ -73,42 +153,6 @@ class SideBar: UIViewController {
             alert.addAction(okAction)
             self.present(alert, animated: true, completion: nil)
         }
-    }
-    
-    @IBAction func FavButtonClicked(_ sender: UIButton) {
-
-        if(User.shared.isRegistered()){
-            performSegue(withIdentifier: "goToFavorites", sender: self)
-        } else {
-            appDelegate.setRoot(storyBoard: .main, vc: .login)
-            animationWithAppDelegate()
-        }
-      }
-    
-    @IBAction func profileButtonClicked(_ sender: UIButton) {
-
-        if(User.shared.isRegistered()){
-            performSegue(withIdentifier: "goToProfile", sender: self)
-        } else {
-            performSegue(withIdentifier: "goToRegister", sender: self)
-        }
-    }
-    
-    @IBAction func myOrdersButtonClicked(_ sender: UIButton) {
-        if(User.shared.isRegistered()){
-            performSegue(withIdentifier: "goToMyOrders", sender: self)
-        } else {
-            performSegue(withIdentifier: "goToTermsAndConditions", sender: self)
-        }
-    }
-    
-    @IBAction func settingsButtonClicked(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToSettings", sender: self)
-    }
-    
-    @IBAction func termsButtonClicked(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToTermsAndConditions", sender: self)
-        
     }
     
     func getUserName() {
@@ -137,7 +181,7 @@ class SideBar: UIViewController {
                           self.displayAlertMessage(title: "Error", messageToDisplay: profileMessage as! String)
                             
                           } else {
-                            
+                    
                               self.usernameLabel.text = ""
                           }
                         
@@ -200,3 +244,4 @@ class SideBar: UIViewController {
         }
     }
 }
+

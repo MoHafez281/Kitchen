@@ -26,7 +26,7 @@ class Favourites: UIViewController , UITableViewDelegate , UITableViewDataSource
         super.viewDidLoad()
         
         
-          NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+          NotificationCenter.default.addObserver(self, selector: #selector(Favourites.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
         
         // Do any additional setup after loading the view.
         
@@ -95,7 +95,6 @@ class Favourites: UIViewController , UITableViewDelegate , UITableViewDataSource
             RemoveFromFav(userId: User.shared.id!, dishId: x)
             menuList.remove(at: indexPath.row)
             tableView.reloadData()
-            
         }
     }
 }

@@ -21,13 +21,12 @@ class Addresses: UIViewController {
         
         tv.reloadData()
         
+        //Reload the view after checking the network connectivity and it is working 
                 NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationsID"), object: nil)
     }
     
     @objc func functionName() {
-
         getAddresses()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,7 +74,6 @@ extension Addresses :UITableViewDelegate , UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         self.performSegue(withIdentifier: "EditAddress", sender: addressesList[indexPath.row])
     }
     
@@ -97,8 +95,6 @@ extension Addresses {
         DispatchQueue.main.async {
             
             let params  = ["user_id" : User.shared.id ] as [String: AnyObject]
-            
-            
             let manager = Manager()
             manager.perform(serviceName: .getAddress, parameters: params) { (JSON, error) -> Void in
                 
@@ -128,7 +124,7 @@ extension Addresses {
         }
     }
     
-    func removeAddress(addressId : Int){
+    func removeAddress(addressId : Int) {
         DispatchQueue.main.async {
             
             var customeurl = hostName + "remove_address/\(addressId)"

@@ -30,7 +30,6 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
         self.dismiss(animated: true, completion: nil)
     }
     
-    
     @IBAction func sendButtonClicked(_ sender: UIButton) {
                 
         if(mobileNumberView.isHidden == false) {
@@ -47,6 +46,7 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
                 
                 let alert = UIAlertController(title: "", message: "Are you sure you entered the registered mobile number?" , preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
+                    
                     self.forgotPassword()
                 }
                 let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
@@ -81,7 +81,6 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
         }
-        
         return false
     }
 }
@@ -155,13 +154,7 @@ extension ForgetPasswordViewController {
                     } else {
                         
                         self.dismissSVProgress()
-                        let alert = UIAlertController(title: "Forget Password", message: "Password Changed Successfully" , preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                            self.dismiss(animated: true) {
-                                self.dismiss(animated: true)
-                            }
-                        }))
-                        self.present(alert, animated: true, completion: nil)
+                        self.displayAlertMessage(title: "Forget Password", messageToDisplay: "Password Changed Successfully")
                     }
                 }
             }

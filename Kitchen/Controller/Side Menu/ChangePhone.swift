@@ -154,13 +154,8 @@ extension ChangePhone {
                         self.dismiss(animated: true)
                         
                     }
-                    
                 }
-                
             }
-            
         }
-        
     }
-    
 }

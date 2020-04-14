@@ -19,7 +19,6 @@ class ResetPassword: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-
     }
     
     @IBAction func dismissPopup(_ sender: UIButton) {

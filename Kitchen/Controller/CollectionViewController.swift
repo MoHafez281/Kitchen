@@ -43,6 +43,7 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         
         dropDownMenuIcon.isHidden = true
         
+        //Reload the view after checking the network connectivity and it is working 
         NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
         
         navigationController?.navigationBar.barTintColor = UIColor.orange
@@ -64,7 +65,6 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         pickerTextField.text = "Available in Maadi Only, Coming Soon"
         
         getCategories()
-        
     }
     
     @objc func functionName() {
@@ -80,6 +80,11 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         }
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
+    
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        navigationController?.setNavigationBarHidden(false, animated: true)
+//    }
     
     @IBAction func menuButton(_ sender: Any) {
         self.sideMenuController?.revealMenu()
@@ -145,8 +150,6 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
             self.getMenu()
         }
     }
-    
-   
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
@@ -273,7 +276,7 @@ extension CollectionViewController {
                 if(error != nil){
                     
                     self.dismissSVProgress()
-                    // self.displayAlertMessage(title: "Error", messageToDisplay: "Connection Error")
+                    self.noInternetConnection()
                     
                 } else {
                     

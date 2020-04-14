@@ -97,7 +97,6 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
     func promoCodeFuncIsHidden() {
         
-        //promoCodeTF.text = ""
         promoCodeTF.isHidden = true
         promoCodeView.isHidden = true
         promoCodeImage.isHidden = true
@@ -121,28 +120,24 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
         discountLabel.text = "\(0)"
         var maxEtaValue = etaArray.max()
         etaLabell.text = maxEtaValue
-
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: true)
-//    }
-    
-    @IBAction func backButtonClicked(_ sender: UIButton) {
- //       performSegue(withIdentifier: "goToKitchen", sender: self)
-        appDelegate.setRoot(storyBoard: .main, vc: .home)
-        animationWithAppDelegate()
+
+        //For Making status bar in black color
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.statusBarStyle = .darkContent
+        } else {
+            UIApplication.shared.statusBarStyle = .default
+        }
     }
     
     @IBAction func removeButtonClicked(_ sender: UIButton) {
         
         if User.shared.cart.count < 1 {
+            
             self.displayAlertMessage(title: "", messageToDisplay: "Cart already empty")
         } else {
             
@@ -307,17 +302,22 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     }
     
     func updateTotal() {
+        
         subTotal = 0
         etaArray = ["0"]
+        
         for mentItem in User.shared.cart {
             subTotal = subTotal + (Int(mentItem.price)! * mentItem.qty)
             etaArray.append(mentItem.eta)
         }
+        
         if (promoCodeButton.isSelected) {
             
             if (User.shared.isRegistered()) {
                 checkPromoCode()
+                
             } else {
+                
                 displayAlertMessage(title: "", messageToDisplay: "You must login first.")
                 isChecked = false
             }
@@ -332,6 +332,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
             }
             
         } else {
+            
             subTotalPriceLabel.text = "\(subTotal)"
             totalPriceLabel.text = "\(subTotal)"
             var maxEtaValue = etaArray.max()

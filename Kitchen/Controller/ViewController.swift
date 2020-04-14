@@ -25,12 +25,10 @@ class ViewController: UIViewController , UITextFieldDelegate {
     }
     
     @IBAction func skipButtonClicked(_ sender: UIButton) {
-
         self.performSegue(withIdentifier: "goToKitchen", sender: self)
     }
     
     @IBAction func loginPressed(_ sender: Any) {
-        
         login()
     }
 }
