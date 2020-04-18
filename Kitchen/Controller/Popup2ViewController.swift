@@ -29,18 +29,19 @@ class Popup2ViewController: UIViewController {
     @IBOutlet weak var option1TF: UITextField!
     @IBOutlet weak var options2TF: UITextField!
     @IBOutlet weak var addToCartButton: UIButton!
+    @IBOutlet weak var stack: UIStackView!
     
     let host = "http://52.15.188.41/cookhouse/images/"
     var reloadView : ((_ data: Bool) -> ())?
-    var x : Int = 1
+    var x : Int = 1 //counter
     var allMenuPopup : Menu?
-    var t = Date() //for time
     var optoions1PickerView = UIPickerView()
     var optionss2PickerView = UIPickerView()
     var options1List = [String]()
     var options2List = [String]()
     var options1isSize = false
     var selectedPrice = -1
+    static var pastaChosen : Int = 1 //For Checking selected sides pasta or rice
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,16 +49,9 @@ class Popup2ViewController: UIViewController {
         self.favouriteButton.tintColor = #colorLiteral(red: 0.9019607843, green: 0.4941176471, blue: 0.1333333333, alpha: 1)
         quantityLabel.text = "\(x)"
         
-//        for menuItem in User.shared.cart {
-//            if(menuItem.id == allMenuPopup!.id){
-//                allMenuPopup = menuItem
-//            }
-//        }
-//
         if (allMenuPopup != nil) {
             
             selectedPrice = Int(allMenuPopup!.price)!
-
             nameLabel.text! = allMenuPopup!.name
             priceLabel.text! = "\(allMenuPopup!.price) EGP"
             descriptionLabel.text! = allMenuPopup!.desc
@@ -65,13 +59,14 @@ class Popup2ViewController: UIViewController {
             x = allMenuPopup!.qty
             totalLabel.text = "\(selectedPrice * allMenuPopup!.qty ) EGP"
             
-            if(User.shared.isRegistered()) {
+            if (User.shared.isRegistered()) {
                 checkIfFav(userId: User.shared.id!, dishId: allMenuPopup!.id)
             } else {
                 favouriteButton.setImage(#imageLiteral(resourceName: "fav-unfilled"), for: .normal)
             }
             
-            if(allMenuPopup!.image != "") {
+            if (allMenuPopup!.image != "") {
+                
                 let imageUrl = allMenuPopup!.image.replacingOccurrences(of: " ", with: "%20")
                 let url = URL(string: host + imageUrl)
                 
@@ -80,27 +75,25 @@ class Popup2ViewController: UIViewController {
                 }
             }
             
-            if(allMenuPopup!.side1 != "") {
+            if (allMenuPopup!.side1 != "") {
                 
                 options1List = allMenuPopup!.side1.components(separatedBy: ",")
                 option1TF.inputView = optoions1PickerView
                 optoions1PickerView.delegate = self
                 optoions1PickerView.dataSource = self
                 User.shared.saveData()
-                
-                if (allMenuPopup!.side1 == "Pasta Red Sauce" ) {
-                
-                    options2View.removeFromSuperview()
-                } else {
                     
-                    if(allMenuPopup!.side2 != "" ){
-                        options2List = allMenuPopup!.side2.components(separatedBy: ",")
-                        options2TF.inputView = optionss2PickerView
-                        optionss2PickerView.delegate = self
-                        optionss2PickerView.dataSource = self
-                    } else {
-                        options2View.removeFromSuperview()
-                    }
+                if (allMenuPopup!.side2 != "" ) {
+                    
+                    options2List = allMenuPopup!.side2.components(separatedBy: ",")
+                    options2TF.inputView = optionss2PickerView
+                    optionss2PickerView.delegate = self
+                    optionss2PickerView.dataSource = self
+                    Popup2ViewController.pastaChosen = 1 //For Checking selected sides pasta or rice(User Select Pasta)
+                    
+                } else {
+                    options2View.removeFromSuperview()
+                    Popup2ViewController.pastaChosen = 3 //Iteam already have one side Pasta or Rice
                 }
                 
             } else {
@@ -108,25 +101,24 @@ class Popup2ViewController: UIViewController {
                 options2View.removeFromSuperview()
             }
             
-            if(allMenuPopup!.size == 1) {
+            if (allMenuPopup!.size == 1) {
                 largeButton.isSelected = true
                 allMenuPopup!.selectedSize = "Large"
                 User.shared.saveData()
             } else {
                 sizeView.removeFromSuperview()
             }
-            
         }
     }
     
     @IBAction func sizeButtonClicked(_ sender: DLRadioButton) {
-        if(sender == mediumButton){
+        if (sender == mediumButton) {
 
             priceLabel.text = allMenuPopup!.priceM + " EGP"
             selectedPrice = Int(allMenuPopup!.priceM)!
             totalLabel.text = "\(selectedPrice * allMenuPopup!.qty) EGP"
             allMenuPopup!.selectedSize = "Medium"
-        }else{
+        } else {
             priceLabel.text = allMenuPopup!.priceL + " EGP"
             selectedPrice = Int(allMenuPopup!.priceL)!
             totalLabel.text = "\(selectedPrice * allMenuPopup!.qty) EGP"
@@ -141,23 +133,23 @@ class Popup2ViewController: UIViewController {
     
     @IBAction func favButtonPressed(_ sender: UIButton) {
         
-        if(User.shared.isRegistered()) {
+        if (User.shared.isRegistered()) {
             
-            if(favouriteButton.tag == 100) {
+            if (favouriteButton.tag == 100) {
                 // isFav
                 favouriteButton.setImage(#imageLiteral(resourceName: "fav-unfilled"), for: .normal)
                 favouriteButton.tag = 50
                 
-                if(allMenuPopup != nil && User.shared.id != nil) {
+                if (allMenuPopup != nil && User.shared.id != nil) {
                     addOrRemoveToFav(remove: true, userId: User.shared.id!, dishId: allMenuPopup!.id)
                 }
                 
-            } else if(favouriteButton.tag == 50) {
+            } else if (favouriteButton.tag == 50) {
                 //unFav
                 favouriteButton.setImage(#imageLiteral(resourceName: "fav-filled"), for: .normal)
                 favouriteButton.tag = 100
                 
-                if(allMenuPopup != nil && User.shared.id != nil) {
+                if (allMenuPopup != nil && User.shared.id != nil) {
                     addOrRemoveToFav(remove: false, userId: User.shared.id!, dishId: allMenuPopup!.id)
                 }
             }
@@ -175,13 +167,21 @@ class Popup2ViewController: UIViewController {
         if (allMenuPopup!.side1 != "" && allMenuPopup!.side2 != "") {
             
             if (option1TF!.text == "" || options2TF!.text == "") {
-                displayAlertMessage(title: "Error", messageToDisplay: "You have to choose your sides!")
+                
+                if (Popup2ViewController.pastaChosen == 2) {
+                    options2TF!.text = ""
+                    savedSelectedItems()
+                } else {
+                    displayAlertMessage(title: "", messageToDisplay: "You have to choose your sides!")
+                }
+                
             } else {
                 savedSelectedItems()
             }
         } else if (allMenuPopup!.side1 != "") {
+            
             if (option1TF!.text == "" && (options2View == nil)) {
-                displayAlertMessage(title: "Error", messageToDisplay: "You have to choose your sides!")
+                displayAlertMessage(title: "", messageToDisplay: "You have to choose your sides!")
             } else {
                 savedSelectedItems()
             }
@@ -191,11 +191,13 @@ class Popup2ViewController: UIViewController {
     }
     
     func savedSelectedItems() {
-        if(allMenuPopup != nil) {
+        
+        if (allMenuPopup != nil) {
+            
             var i = 0
             for menuItem in User.shared.cart {
                 
-                if(menuItem.id == allMenuPopup!.id && menuItem.selectedSize == allMenuPopup!.selectedSize && menuItem.selectedOption1 == allMenuPopup!.selectedOption1 && menuItem.selectedOption2 == allMenuPopup!.selectedOption2) {
+                if (menuItem.id == allMenuPopup!.id && menuItem.selectedSize == allMenuPopup!.selectedSize && menuItem.selectedOption1 == allMenuPopup!.selectedOption1 && menuItem.selectedOption2 == allMenuPopup!.selectedOption2) {
                     i = i + 1
                     menuItem.qty = allMenuPopup!.qty
                     menuItem.price = "\(self.selectedPrice)"
@@ -203,7 +205,7 @@ class Popup2ViewController: UIViewController {
                 }
             }
             
-            if(i == 0) {
+            if (i == 0) {
                 let item = Menu(id: allMenuPopup!.id, name: allMenuPopup!.name, price: allMenuPopup!.price, likes: allMenuPopup!.likes, location: allMenuPopup!.location, type: allMenuPopup!.type, qty: allMenuPopup!.qty, desc: allMenuPopup!.desc, image: allMenuPopup!.image, size: allMenuPopup!.size, priceM: allMenuPopup!.priceM, priceL: allMenuPopup!.priceL, cost: allMenuPopup!.cost, eta: allMenuPopup!.eta, options1: allMenuPopup!.options1, options2: allMenuPopup!.options2, selectedOption1: allMenuPopup!.selectedOption1, selectedOption2: allMenuPopup!.selectedOption2, side1: allMenuPopup!.side1, side2: allMenuPopup!.side2, selectedSize: allMenuPopup!.selectedSize)
                 User.shared.cart.append(item)
                 User.shared.saveData()
@@ -242,9 +244,9 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if(pickerView == optoions1PickerView) {
+        if (pickerView == optoions1PickerView) {
             return options1List.count
-        } else if(pickerView == optionss2PickerView) {
+        } else if (pickerView == optionss2PickerView) {
             return options2List.count
         } else {
             return 0
@@ -252,9 +254,9 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if(pickerView == optoions1PickerView) {
+        if (pickerView == optoions1PickerView) {
             return options1List[row]
-        } else if(pickerView == optionss2PickerView) {
+        } else if (pickerView == optionss2PickerView) {
             return options2List[row]
         } else {
             return ""
@@ -262,21 +264,35 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if(pickerView == optoions1PickerView){
+        
+        if(pickerView == optoions1PickerView) {
             
             allMenuPopup!.selectedOption1 = options1List[row]
             option1TF.text = options1List[row]
-            if (option1TF!.text == "Pasta Red Sauce") {
-                           
-                options2View!.removeFromSuperview()
-            } else if (option1TF!.text == "Pasta White Sauce") {
-                options2View!.removeFromSuperview()
-            } else {
-                options2View.addSubview(sizeView)
+            
+            if (option1TF!.text == "Pasta Red Sauce" || option1TF!.text == "Pasta White Sauce") {
+                
+                if Popup2ViewController.pastaChosen == 3 {
+                   // Popup2ViewController.pastaChosen = 1 //Iteam already have one side Pasta or Rice
+                    
+                } else if (Popup2ViewController.pastaChosen == 1) {
+                    // User select Pasta
+                    options2View.isHidden = true
+                    Popup2ViewController.pastaChosen = 2 //Iteam have Pasta and Rice
+                    allMenuPopup!.selectedOption2 = ""
+                }
+                
+            } else if (Popup2ViewController.pastaChosen == 2) {
+                //User Select Rice
+                options2View.isHidden = false
+                Popup2ViewController.pastaChosen = 1
             }
-        }else if(pickerView == optionss2PickerView){
+            
+        } else if (pickerView == optionss2PickerView) {
+            
             allMenuPopup!.selectedOption2 = options2List[row]
             options2TF.text = options2List[row]
+            Popup2ViewController.pastaChosen = 1 //For Checking selected sides pasta or rice(User Select Pasta)
         }
         User.shared.saveData()
     }
@@ -291,7 +307,7 @@ extension Popup2ViewController {
             let manager = Manager()
             manager.perform(serviceName: .checkIfFav, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil) {
+                if (error != nil) {
                     
                     self.favouriteButton.setImage(#imageLiteral(resourceName: "fav-unfilled"), for: .normal)
                     self.favouriteButton.tag = 50
@@ -300,7 +316,8 @@ extension Popup2ViewController {
                     
                     let jsonDict = JSON as? NSDictionary
                     let isFav = jsonDict!["favorite"] as! Bool
-                    if(isFav) {
+                    
+                    if (isFav) {
                         self.favouriteButton.setImage(#imageLiteral(resourceName: "fav-filled"), for: .normal)
                         self.favouriteButton.tag = 100
                     } else {
@@ -319,17 +336,18 @@ extension Popup2ViewController {
             let manager = Manager()
             var servicename : ServiceName = .addToFavourite
             
-            if(remove) {
+            if (remove) {
                 servicename = .removeFromFav
             }
             manager.perform(serviceName: servicename, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil) {
+                if (error != nil) {
                     print("Error: " + error!)
                 } else {
                     let jsonDict = JSON as? NSDictionary
                     let jsonError = jsonDict!["error"] as! Bool
-                    if(jsonError){
+                    
+                    if (jsonError) {
                         print("Error")
                     } else {
                         self.reloadView?(true)

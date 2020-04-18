@@ -32,6 +32,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     var subTotal : Int = 0
     var discount : Double = 0
     var total : Double = 0
+
     var isChecked = false {
         didSet {
             
@@ -106,6 +107,9 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+        
         promoCodeTF.isHidden = true
         promoCodeView.isHidden = true
         promoCodeImage.isHidden = true
@@ -121,19 +125,27 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
         var maxEtaValue = etaArray.max()
         etaLabell.text = maxEtaValue
     }
-
+    
+    //Reload the view after checking the network connectivity and it is working
+    @objc func functionName() {
+        checkPromoCode()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-
         //For Making status bar in black color
-        if #available(iOS 13.0, *) {
-            UIApplication.shared.statusBarStyle = .darkContent
-        } else {
-            UIApplication.shared.statusBarStyle = .default
-        }
+//        if #available(iOS 13.0, *) {
+//            UIApplication.shared.statusBarStyle = .darkContent
+//        } else {
+//            UIApplication.shared.statusBarStyle = .default
+//        }
     }
     
+    @IBAction func backButtonPressed(_ sender: UIButton) {
+        appDelegate.setRoot(storyBoard: .main, vc: .home)
+        self.animationWithAppDelegate()
+    }
     @IBAction func removeButtonClicked(_ sender: UIButton) {
         
         if User.shared.cart.count < 1 {
@@ -231,7 +243,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
             
             cell.sizeLabel.text = "Large"
             
-        } else if (menuItem.size == 1 && menuItem.selectedOption1 == "" && menuItem.selectedOption2 == ""){
+        } else if (menuItem.size != 0 && menuItem.selectedOption1 == "" && menuItem.selectedOption2 == ""){
             
             cell.sizeLabel.text = "\(menuItem.selectedSize)"
             cell.priceLabel.text = "\(Int(menuItem.price)! * menuItem.qty)"

@@ -21,7 +21,15 @@ class ViewController: UIViewController , UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+        
         self.loginButton.layer.cornerRadius = self.view.frame.height * 0.082 * 0.5
+    }
+    
+    //Reload the view after checking the network connectivity and it is working
+    @objc func functionName() {
+        login()
     }
     
     @IBAction func skipButtonClicked(_ sender: UIButton) {

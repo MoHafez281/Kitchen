@@ -37,7 +37,6 @@ class Favourites: UIViewController , UITableViewDelegate , UITableViewDataSource
     }
     
     @objc func functionName() {
-
         getFav(userId: User.shared.id!)
 
     }
@@ -126,14 +125,10 @@ extension Favourites {
                         let menus = jsonDict!["dishes"]
                         self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
                         self.tableView.reloadData()
-                        
                     }
                 }
-                
             }
-            
         }
-        
     }
     
     func RemoveFromFav(userId: Int, dishId: Int){

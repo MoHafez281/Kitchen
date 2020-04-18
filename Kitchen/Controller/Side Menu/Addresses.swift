@@ -18,9 +18,7 @@ class Addresses: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         tv.reloadData()
-        
         //Reload the view after checking the network connectivity and it is working 
                 NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationsID"), object: nil)
     }

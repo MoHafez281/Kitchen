@@ -22,6 +22,8 @@ extension UIViewController {
     func dismissSVProgress() {
         SVProgressHUD.dismiss()
         self.view.isUserInteractionEnabled = true
+        self.navigationItem.leftBarButtonItem?.isEnabled = true
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
     func placeholder (textFields: UITextField , placeHolderName: String , color: UIColor) {

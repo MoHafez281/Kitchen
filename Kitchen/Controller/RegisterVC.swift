@@ -30,6 +30,9 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
          
         // DatePicker View
         //For setting the maximum year 2015 & minimum 1900
@@ -39,6 +42,7 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         var minimumYear: Date {
            return (Calendar.current as NSCalendar).date(byAdding: .year, value: -120, to: Date(), options: [])!
         }
+        // DatePicker View
         datePicker = UIDatePicker()
         datePicker?.maximumDate = maximumYear
         datePicker?.minimumDate = minimumYear
@@ -51,6 +55,11 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         let pickerView = UIPickerView()
         pickerView.delegate = self
         locationPicker.inputView = pickerView
+    }
+    
+    //Reload the view after checking the network connectivity and it is working
+    @objc func functionName() {
+        register()
     }
     
      // DatePiceker View

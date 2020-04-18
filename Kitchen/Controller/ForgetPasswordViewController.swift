@@ -24,6 +24,15 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
         
         mobileNumberView.isHidden = false
         self.enterMobileNumber.delegate = self
+        
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+    }
+    
+    //Reload the view after checking the network connectivity and it is working
+    @objc func functionName() {
+        forgotPassword()
+        authCode()
     }
     
     @IBAction func dismissClicked(_ sender: UIButton) {
