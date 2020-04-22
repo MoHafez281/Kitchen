@@ -9,7 +9,7 @@
 import UIKit
 
 class CategoryCVCell: UICollectionViewCell {
+    
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var underlineView: UIView!
-    
 }

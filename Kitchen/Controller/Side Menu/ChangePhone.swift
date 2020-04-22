@@ -24,7 +24,7 @@ class ChangePhone: UIViewController , UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         selectPhoneTF.text = User.shared.phone
         selectPhoneTF.isEnabled = false
         
@@ -35,7 +35,6 @@ class ChangePhone: UIViewController , UITextFieldDelegate {
     @IBAction func dismissClicked(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     
     @IBAction func updateButtonClicked(_ sender: UIButton) {
         
@@ -81,7 +80,6 @@ class ChangePhone: UIViewController , UITextFieldDelegate {
         
         return false
     }
-    
     
 }
 

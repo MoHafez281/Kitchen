@@ -19,11 +19,17 @@ extension UIViewController {
         self.present(alertController, animated: true, completion:nil)
     }
     
+    func showSVProgress() {
+        navigationController?.navigationBar.isUserInteractionEnabled = false
+        view.isUserInteractionEnabled = false
+        SVProgressHUD.show()
+    }
+    
     func dismissSVProgress() {
-        SVProgressHUD.dismiss()
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
         self.view.isUserInteractionEnabled = true
-        self.navigationItem.leftBarButtonItem?.isEnabled = true
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        SVProgressHUD.dismiss()
+
     }
     
     func placeholder (textFields: UITextField , placeHolderName: String , color: UIColor) {

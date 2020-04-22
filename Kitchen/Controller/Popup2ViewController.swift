@@ -33,7 +33,7 @@ class Popup2ViewController: UIViewController {
     
     let host = "http://52.15.188.41/cookhouse/images/"
     var reloadView : ((_ data: Bool) -> ())?
-    var x : Int = 1 //counter
+    var x : Int = 1 //Counter
     var allMenuPopup : Menu?
     var optoions1PickerView = UIPickerView()
     var optionss2PickerView = UIPickerView()
@@ -105,6 +105,7 @@ class Popup2ViewController: UIViewController {
                 largeButton.isSelected = true
                 allMenuPopup!.selectedSize = "Large"
                 User.shared.saveData()
+                
             } else {
                 sizeView.removeFromSuperview()
             }
@@ -244,6 +245,7 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
         if (pickerView == optoions1PickerView) {
             return options1List.count
         } else if (pickerView == optionss2PickerView) {
@@ -254,6 +256,7 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
         if (pickerView == optoions1PickerView) {
             return options1List[row]
         } else if (pickerView == optionss2PickerView) {
@@ -276,7 +279,7 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
                    // Popup2ViewController.pastaChosen = 1 //Iteam already have one side Pasta or Rice
                     
                 } else if (Popup2ViewController.pastaChosen == 1) {
-                    // User select Pasta
+//                  User select Pasta
                     options2View.isHidden = true
                     Popup2ViewController.pastaChosen = 2 //Iteam have Pasta and Rice
                     allMenuPopup!.selectedOption2 = ""
@@ -300,7 +303,7 @@ extension Popup2ViewController : UIPickerViewDelegate, UIPickerViewDataSource {
 
 extension Popup2ViewController {
     
-    func checkIfFav(userId: Int, dishId: Int){
+    func checkIfFav(userId: Int, dishId: Int) {
         DispatchQueue.main.async {
             
             let params  = ["dish_id" : dishId ,"user_id" : userId ] as [String: AnyObject]
@@ -329,7 +332,7 @@ extension Popup2ViewController {
         }
     }
     
-    func addOrRemoveToFav(remove: Bool,userId: Int, dishId: Int){
+    func addOrRemoveToFav(remove: Bool,userId: Int, dishId: Int) {
         DispatchQueue.main.async {
             
             let params  = ["dish_id" : dishId ,"user_id" : userId ] as [String: AnyObject]
@@ -343,7 +346,9 @@ extension Popup2ViewController {
                 
                 if (error != nil) {
                     print("Error: " + error!)
+                    
                 } else {
+                    
                     let jsonDict = JSON as? NSDictionary
                     let jsonError = jsonDict!["error"] as! Bool
                     

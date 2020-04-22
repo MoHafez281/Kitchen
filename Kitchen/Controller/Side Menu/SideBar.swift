@@ -16,7 +16,7 @@ import ObjectMapper
 class SideBar: UIViewController {
 
     var userPoints : Int = 0
-    static var checkVisiableView : Int = 1
+    static var checkVisiableView : Int = 1 //To Check which SideMenuVC is visiable now
     
     @IBOutlet weak var leftConst: NSLayoutConstraint!
     @IBOutlet weak var pointsNameLabel: UILabel!
@@ -35,10 +35,10 @@ class SideBar: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         leftConst.constant = self.view.frame.width / 3
         
-        if(User.shared.isRegistered()) {
+        if (User.shared.isRegistered()) {
             
             self.logOutButton.setTitle("Logout", for: .normal)
             
@@ -65,6 +65,7 @@ class SideBar: UIViewController {
         if SideBar.checkVisiableView == 1 {
             sideMenuController?.hideMenu(animated: true, completion: nil)
         } else {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
             performSegue(withIdentifier: "goToKitchen", sender: self)
         }
         SideBar.checkVisiableView = 1
@@ -72,23 +73,27 @@ class SideBar: UIViewController {
     
     @IBAction func profileButtonClicked(_ sender: UIButton) {
         
-        if(User.shared.isRegistered()) {
+        if (User.shared.isRegistered()) {
             if SideBar.checkVisiableView == 2 {
                sideMenuController?.hideMenu(animated: true, completion: nil)
             } else {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
                performSegue(withIdentifier: "goToProfile", sender: self)
             }
             SideBar.checkVisiableView = 2
         } else {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
             performSegue(withIdentifier: "goToRegister", sender: self)
         }
     }
     
     @IBAction func FavButtonClicked(_ sender: UIButton) {
-        if(User.shared.isRegistered()) {
+        
+        if (User.shared.isRegistered()) {
             if SideBar.checkVisiableView == 3 {
                 sideMenuController?.hideMenu(animated: true, completion: nil)
             } else {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
                 performSegue(withIdentifier: "goToFavorites", sender: self)
             }
             SideBar.checkVisiableView = 3
@@ -97,20 +102,25 @@ class SideBar: UIViewController {
             SideBar.checkVisiableView = 1
             animationWithAppDelegate()
         }
-      }
+    }
     
     @IBAction func myOrdersButtonClicked(_ sender: UIButton) {
-        if(User.shared.isRegistered()) {
+        
+        if (User.shared.isRegistered()) {
             if SideBar.checkVisiableView == 4 {
                 sideMenuController?.hideMenu(animated: true, completion: nil)
             } else {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
                 performSegue(withIdentifier: "goToMyOrders", sender: self)
             }
             SideBar.checkVisiableView = 4
+            
         } else {
+            
             if SideBar.checkVisiableView == 6 {
                 sideMenuController?.hideMenu(animated: true, completion: nil)
             } else {
+                sideMenuController?.hideMenu(animated: true, completion: nil)
                 performSegue(withIdentifier: "goToTermsAndConditions", sender: self)
             }
             SideBar.checkVisiableView = 6
@@ -118,25 +128,30 @@ class SideBar: UIViewController {
     }
     
     @IBAction func settingsButtonClicked(_ sender: UIButton) {
+        
         if SideBar.checkVisiableView == 5 {
             sideMenuController?.hideMenu(animated: true, completion: nil)
         } else {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
             performSegue(withIdentifier: "goToSettings", sender: self)
         }
         SideBar.checkVisiableView = 5
     }
     
     @IBAction func termsButtonClicked(_ sender: UIButton) {
+        
         if SideBar.checkVisiableView == 6 {
             sideMenuController?.hideMenu(animated: true, completion: nil)
         } else {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
             performSegue(withIdentifier: "goToTermsAndConditions", sender: self)
         }
         SideBar.checkVisiableView = 6
     }
     
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        if(User.shared.isRegistered()) {
+        
+        if (User.shared.isRegistered()) {
             let alert = UIAlertController(title: "Logout", message: "Are you sure you want to logout" , preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
                     SVProgressHUD.show()
@@ -163,7 +178,7 @@ class SideBar: UIViewController {
             let manager = Manager()
             manager.perform(serviceName: .getProfile, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil) {
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     
@@ -175,7 +190,7 @@ class SideBar: UIViewController {
                     
                     if (profileResponse as? Int == 1) {
                         
-                        if(User.shared.isRegistered()) {
+                        if (User.shared.isRegistered()) {
                             
                           self.dismissSVProgress()
                           self.displayAlertMessage(title: "Error", messageToDisplay: profileMessage as! String)
@@ -187,7 +202,7 @@ class SideBar: UIViewController {
                         
                     } else {
                         
-                        if(User.shared.isRegistered()) {
+                        if (User.shared.isRegistered()) {
                             
                             let user: User = Mapper<User>().map(JSONObject: JSON)!
                             User.shared.setIsRegister(registered: true)
@@ -196,7 +211,6 @@ class SideBar: UIViewController {
                             self.usernameLabel.text = "HI, \(String(User.shared.name!))"
                             
                         } else {
-                            
                             self.usernameLabel.text = ""
                         }
                     }
@@ -213,7 +227,7 @@ class SideBar: UIViewController {
             let manager = Manager()
             manager.perform(serviceName: .getUserPoints, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     
@@ -230,6 +244,7 @@ class SideBar: UIViewController {
                     } else {
 
                         if User.shared.isRegistered() {
+                            
                             self.userPoints = points as! Int
                             self.pointsLabel.text = String ("\(self.userPoints)")
                             
@@ -244,4 +259,3 @@ class SideBar: UIViewController {
         }
     }
 }
-

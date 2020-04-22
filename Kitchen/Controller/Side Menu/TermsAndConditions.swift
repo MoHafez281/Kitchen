@@ -8,13 +8,15 @@
 
 import UIKit
 import SideMenuSwift
+import SVProgressHUD
 
 class TermsAndConditions: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+//      For dismissing loading view if coming back from view that ladoing data
+        SVProgressHUD.dismiss()
     }
     
     @IBAction func sideBarTapped(_ sender: Any) {

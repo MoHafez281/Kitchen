@@ -24,15 +24,6 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
         
         mobileNumberView.isHidden = false
         self.enterMobileNumber.delegate = self
-        
-        //Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
-    }
-    
-    //Reload the view after checking the network connectivity and it is working
-    @objc func functionName() {
-        forgotPassword()
-        authCode()
     }
     
     @IBAction func dismissClicked(_ sender: UIButton) {
@@ -41,9 +32,9 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     
     @IBAction func sendButtonClicked(_ sender: UIButton) {
                 
-        if(mobileNumberView.isHidden == false) {
+        if (mobileNumberView.isHidden == false) {
             
-            if((enterMobileNumber.text?.isEmpty)!) {
+            if ((enterMobileNumber.text?.isEmpty)!) {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Please Enter your phone number.")
                 
@@ -58,6 +49,7 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
                     
                     self.forgotPassword()
                 }
+                
                 let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
                 alert.addAction(cancel)
                 alert.addAction(okAction)
@@ -66,7 +58,7 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
             
         } else {
             
-            if((authCodeTF.text?.isEmpty)!){
+            if ((authCodeTF.text?.isEmpty)!) {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Please enter the authentication code you recieved." )
                 
@@ -74,19 +66,21 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
                 
                 displayAlertMessage(title: "", messageToDisplay: "Please enter your new password." )
                 
-            } else if (enterNewPasswordTF.text?.count)! < 8 || (enterNewPasswordTF.text?.count)! > 12  {
+            } else if (enterNewPasswordTF.text?.count)! < 8 || (enterNewPasswordTF.text?.count)! > 12 {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Password lenght must be minimum of 8 characters long & maximum of 12 characters long." )
                 
             } else {
+                
                 authCode()
             }
         }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
         if textField == enterMobileNumber {
-            let allowedCharacters = CharacterSet.decimalDigits //for digits only
+            let allowedCharacters = CharacterSet.decimalDigits //For digits only
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
         }
@@ -98,8 +92,8 @@ extension ForgetPasswordViewController {
     
     func forgotPassword() {
         
-        SVProgressHUD.show()
         self.view.isUserInteractionEnabled = false
+        SVProgressHUD.show()
         DispatchQueue.main.async {
             
             let params  = ["phone_number" : "2\(self.enterMobileNumber.text!)" ] as [String: AnyObject]
@@ -107,7 +101,7 @@ extension ForgetPasswordViewController {
             let manager = Manager()
             manager.perform(methodType: .post, useCustomeURL : true, urlStr: customeurl, serviceName: .updatePassword ,  parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     self.noInternetConnection()
@@ -136,15 +130,15 @@ extension ForgetPasswordViewController {
     
     func authCode() {
         
-        SVProgressHUD.show()
         self.view.isUserInteractionEnabled = false
+        SVProgressHUD.show()
         DispatchQueue.main.async {
             
             let params  = ["password" : self.enterNewPasswordTF.text! ,"mobile" : self.enterMobileNumber.text! , "rand": self.authCodeTF.text! ] as [String: AnyObject]
             let manager = Manager()
             manager.perform(methodType: .post, serviceName: .forgotPasswordAuthCode ,  parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     self.noInternetConnection()

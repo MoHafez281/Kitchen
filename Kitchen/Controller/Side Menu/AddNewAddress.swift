@@ -36,6 +36,9 @@ class AddNewAddress: UIViewController , UIPickerViewDelegate , UIPickerViewDataS
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//      For dismissing loading view if coming back from view that ladoing data
+        SVProgressHUD.dismiss()
+
         //TODO:Set up the location manager here.
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest

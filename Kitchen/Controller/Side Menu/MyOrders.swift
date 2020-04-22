@@ -11,6 +11,7 @@ import SideMenuSwift
 import Alamofire
 import SwiftyJSON
 import ObjectMapper
+import SVProgressHUD
 
 class MyOrders: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
@@ -22,13 +23,21 @@ class MyOrders: UIViewController , UITableViewDelegate , UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+//      For dismissing loading view if coming back from view that ladoing data
+        SVProgressHUD.dismiss()
+
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(MyOrders.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+        
         getOrder()
+    }
     
+    //Reload the view after checking the network connectivity and it is working
+    @objc func functionName() {
+        getOrder()
     }
     
     @IBAction func sideBarTapped(_ sender: Any) {
-        
         self.sideMenuController?.revealMenu()
     }
     

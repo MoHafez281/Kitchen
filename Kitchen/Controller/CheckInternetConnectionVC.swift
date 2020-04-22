@@ -27,9 +27,9 @@ class CheckInternetConnectionVC: UIViewController , UIAdaptivePresentationContro
     
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         if Network.reachability.isConnectedToNetwork {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)
         } else {
-            //Wlaking thorugh the app while network is down
+//           Walking thorugh the app while network is down
         }
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -62,7 +62,7 @@ class CheckInternetConnectionVC: UIViewController , UIAdaptivePresentationContro
     @IBAction func reloadButtonPressed(_ sender: Any) {
 
         if Network.reachability.isConnectedToNetwork {
-//            _ = navigationController?.popToRootViewController(animated: true)
+//           _ = navigationController?.popToRootViewController(animated: true)
             dismiss(animated: true) {
                 //https://stackoverflow.com/questions/41618182/trigger-function-in-vc-when-modal-view-is-dismissed/41619015
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationID"), object: nil)

@@ -16,16 +16,10 @@ class LoginPopup: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
-    }
-    
-    //Reload the view after checking the network connectivity and it is working
-    @objc func functionName() {
-        login()
     }
     
     @IBAction func dismissPopup(_ sender: Any) {
@@ -37,15 +31,15 @@ class LoginPopup: UIViewController {
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
-        login()
+        loginPopup()
     }
 }
 
 extension LoginPopup {
     
-    func login() {
+    func loginPopup() {
         
-        self.view.isUserInteractionEnabled = false
+        view.isUserInteractionEnabled = false
         SVProgressHUD.show()
         DispatchQueue.main.async {
             
@@ -53,7 +47,7 @@ extension LoginPopup {
             let manager = Manager()
             manager.perform(serviceName: .login, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     self.noInternetConnection()

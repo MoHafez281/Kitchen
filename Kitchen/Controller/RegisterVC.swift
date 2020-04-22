@@ -31,18 +31,15 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
-         
-        // DatePicker View
-        //For setting the maximum year 2015 & minimum 1900
+//      DatePicker View
+//      For setting the maximum year 2015 & minimum 1900
         var maximumYear: Date {
            return (Calendar.current as NSCalendar).date(byAdding: .year, value: -5, to: Date(), options: [])!
         }
         var minimumYear: Date {
            return (Calendar.current as NSCalendar).date(byAdding: .year, value: -120, to: Date(), options: [])!
         }
-        // DatePicker View
+//      DatePicker View
         datePicker = UIDatePicker()
         datePicker?.maximumDate = maximumYear
         datePicker?.minimumDate = minimumYear
@@ -57,16 +54,11 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         locationPicker.inputView = pickerView
     }
     
-    //Reload the view after checking the network connectivity and it is working
-    @objc func functionName() {
-        register()
-    }
-    
-     // DatePiceker View
+//  DatePiceker View
     @objc func viewTapped (gestureRecognizer: UITapGestureRecognizer) {
         view.endEditing(false)
     }
-    // DatePiceker View
+//  DatePiceker View
     @objc func dateChanged(datePicker: UIDatePicker) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
@@ -154,7 +146,8 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                     let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
                         
                         self.register()
-                        }
+                    }
+                        
                     let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
                     alert.addAction(cancel)
                     alert.addAction(okAction)
@@ -173,15 +166,16 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
 extension RegisterVC {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
         if textField == mobileNumberTF {
-            let allowedCharacters = CharacterSet.decimalDigits //for digits only
+            let allowedCharacters = CharacterSet.decimalDigits //For digits only
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
         }
         return false
     }
     
-    func isValidEmailAddress(emailAddressString: String) -> Bool {
+    func isValidEmailAddress (emailAddressString: String) -> Bool {
         var returnValue = true
         let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
         
@@ -215,8 +209,8 @@ extension RegisterVC {
             let manager = Manager()
             manager.perform(serviceName: .register , parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
-                    // show error
+                if (error != nil) {
+
                     self.dismissSVProgress()
                     self.noInternetConnection()
 

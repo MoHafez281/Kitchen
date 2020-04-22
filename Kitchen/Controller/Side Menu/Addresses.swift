@@ -18,11 +18,13 @@ class Addresses: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(Addresses.functionName), name:NSNotification.Name(rawValue: "NotificationsID"), object: nil)
+        
         tv.reloadData()
-        //Reload the view after checking the network connectivity and it is working 
-                NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationsID"), object: nil)
     }
     
+     //Reload the view after checking the network connectivity and it is working
     @objc func functionName() {
         getAddresses()
     }
@@ -88,6 +90,7 @@ extension Addresses :UITableViewDelegate , UITableViewDataSource {
 }
 
 extension Addresses {
+    
     func getAddresses(){
         
         DispatchQueue.main.async {

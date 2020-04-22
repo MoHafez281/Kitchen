@@ -46,6 +46,10 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(ConfirmAddressViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+        
+        
         mobileNumberTextFiled.delegate = self
         
         addTempMobileOutlet.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
@@ -118,6 +122,11 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
         addressTextField.inputView = addressPickerView
         addressPickerView.delegate = self
         datePicker.datePickerMode = .date
+    }
+    
+    //Reload the view after checking the network connectivity and it is working
+    @objc func functionName() {
+        getAddresses()
     }
     
     @IBAction func NowButtonCliked(_ sender: DLRadioButton) {
@@ -236,7 +245,6 @@ extension ConfirmAddressViewController {
                     
                     self.noInternetConnection()
                   //  self.addressTextField.isEnabled = false
-                    
                     
                 } else {
                     

@@ -11,6 +11,7 @@ import DLRadioButton
 import Alamofire
 import SwiftyJSON
 import ObjectMapper
+import SVProgressHUD
 
 class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
@@ -106,10 +107,9 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(Cart.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+
         promoCodeTF.isHidden = true
         promoCodeView.isHidden = true
         promoCodeImage.isHidden = true
@@ -125,8 +125,8 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
         var maxEtaValue = etaArray.max()
         etaLabell.text = maxEtaValue
     }
-    
-    //Reload the view after checking the network connectivity and it is working
+
+//  Reload the view after checking the network connectivity and it is working
     @objc func functionName() {
         checkPromoCode()
     }
@@ -134,7 +134,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        //For Making status bar in black color
+//        For Making status bar in black color
 //        if #available(iOS 13.0, *) {
 //            UIApplication.shared.statusBarStyle = .darkContent
 //        } else {
@@ -146,11 +146,13 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
         appDelegate.setRoot(storyBoard: .main, vc: .home)
         self.animationWithAppDelegate()
     }
+    
     @IBAction func removeButtonClicked(_ sender: UIButton) {
         
         if User.shared.cart.count < 1 {
             
             self.displayAlertMessage(title: "", messageToDisplay: "Cart already empty")
+            
         } else {
             
             let alert = UIAlertController(title: "Warning", message: "Do you really want to empty your cart?" , preferredStyle: .alert)
@@ -327,9 +329,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
             
             if (User.shared.isRegistered()) {
                 checkPromoCode()
-                
             } else {
-                
                 displayAlertMessage(title: "", messageToDisplay: "You must login first.")
                 isChecked = false
             }

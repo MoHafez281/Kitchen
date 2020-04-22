@@ -38,10 +38,9 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         
         dropDownMenuIcon.isHidden = true
         
-        //Reload the view after checking the network connectivity and it is working 
+//      Reload the view after checking the network connectivity and it is working
         NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
                 
-       // self.navigationController?.isNavigationBarHidden = true
         imageSlider.setImageInputs([ AlamofireSource(urlString: host + "food.jpeg" )!,
                                      AlamofireSource(urlString: host + "pizza.jpg" )!,
                                      AlamofireSource(urlString: host + "fruits.jpg" )!,
@@ -61,14 +60,14 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         getCategories()
     }
     
-    //Reload the view after checking the network connectivity and it is working
+//  Reload the view after checking the network connectivity and it is working
     @objc func functionName() {
         getCategories()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+                
         if (User.shared.cart.count > 0) {
             cartButton.image = #imageLiteral(resourceName: "cart-filled")
         } else {
@@ -118,6 +117,7 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
             cell.title.text = category.title
             
             if (selectedCategory != nil) {
+                
                 if (selectedCategory!.id == category.id) {
                     
                     cell.title.textColor = #colorLiteral(red: 0.9581589103, green: 0.4826408029, blue: 0.2752729356, alpha: 1)
@@ -175,7 +175,7 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
             popupVC.reloadView = { (Bool) in
                 
                 if (Bool) {
-                    if (User.shared.cart.count > 0){ 
+                    if (User.shared.cart.count > 0) {
                         self.cartButton.image = #imageLiteral(resourceName: "cart-filled")
                     } else {
                         self.cartButton.image = #imageLiteral(resourceName: "cart")
@@ -206,7 +206,7 @@ extension CollectionViewController : UIPickerViewDelegate , UIPickerViewDataSour
         selectedLocation = location[row]
         
         if selectedLocation == "Maadi" {
-            //Maadi selected
+//          Maadi selected
         } else {
             let alert = UIAlertController(title: "", message: "Available in Maadi Only, Coming Soon" , preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
@@ -223,9 +223,8 @@ extension CollectionViewController {
     
     func getMenu() {
         
+        navigationController?.navigationBar.isUserInteractionEnabled = false
         view.isUserInteractionEnabled = false
-        self.navigationItem.leftBarButtonItem?.isEnabled = false
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
         SVProgressHUD.show()
         DispatchQueue.main.async {
             
@@ -233,7 +232,7 @@ extension CollectionViewController {
             let manager = Manager()
             manager.perform(serviceName: .getMenu, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil) {
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     self.noInternetConnection()
@@ -254,8 +253,8 @@ extension CollectionViewController {
                         let menus = jsonDict!["dishes"]
                         self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
                         self.dismissSVProgress()
-                        //For making collectionview reload withanimation
-                        self.menuCV.performBatchUpdates(
+//                      For making collectionview reload with animation
+                        self.menuCV.performBatchUpdates (
                           {
                             self.menuCV.reloadSections(NSIndexSet(index: 0) as IndexSet)
                           }, completion: { (finished:Bool) -> Void in
@@ -275,9 +274,8 @@ extension CollectionViewController {
     
     func getCategories() {
         
+        navigationController?.navigationBar.isUserInteractionEnabled = false
         view.isUserInteractionEnabled = false
-        self.navigationItem.leftBarButtonItem?.isEnabled = false
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
         SVProgressHUD.show()
         DispatchQueue.main.async {
             
@@ -325,6 +323,3 @@ extension CollectionViewController {
         }
     }
 }
-
-
-

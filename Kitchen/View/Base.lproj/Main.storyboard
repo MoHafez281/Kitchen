@@ -171,7 +171,7 @@
                                     <color key="titleColor" red="0.93725490199999995" green="0.39607843139999999" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="u4J-P1-AeM" kind="show" id="PMH-Je-GbA"/>
+                                    <action selector="registeButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="STM-zF-D5q"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -209,12 +209,13 @@
                         <outlet property="emailTextField" destination="A3X-MQ-lEi" id="xLv-kZ-TQd"/>
                         <outlet property="loginButton" destination="Vkc-w9-BgN" id="SGe-7k-i2o"/>
                         <outlet property="passwordTextField" destination="hQ4-lf-uBk" id="Crm-Ic-n2g"/>
-                        <segue destination="Kep-MN-6Be" kind="show" identifier="goToKitchen" id="omd-f4-UzW"/>
+                        <segue destination="Kep-MN-6Be" kind="presentation" identifier="goToKitchen" modalTransitionStyle="coverVertical" id="omd-f4-UzW"/>
+                        <segue destination="c0J-wo-ek5" kind="presentation" identifier="goToRegister" modalTransitionStyle="coverVertical" id="3F8-1K-KeC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3819" y="581"/>
+            <point key="canvasLocation" x="3819" y="579"/>
         </scene>
         <!--Menu-->
         <scene sceneID="L7m-cU-0I6">
@@ -772,14 +773,16 @@
                                     <action selector="PointsButtonCliked:" destination="19U-tb-UtL" eventType="touchUpInside" id="cvw-ts-5Po"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K8u-fp-SWz">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K8u-fp-SWz">
                                 <rect key="frame" x="15.333333333333336" y="91" width="86" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="K8u-fp-SWz" secondAttribute="height" multiplier="43:16" id="AJS-ZB-D2p"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="backArrow-Orange"/>
+                                <state key="normal" image="backArrow-Orange">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
-                                    <action selector="backButtonPressed:" destination="19U-tb-UtL" eventType="touchUpInside" id="aJN-ow-ogd"/>
+                                    <segue destination="Kep-MN-6Be" kind="presentation" modalTransitionStyle="crossDissolve" id="tI5-mE-fbc"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hE1-Ct-B7u">
@@ -836,6 +839,7 @@
                             <constraint firstItem="IYp-d0-Uwe" firstAttribute="trailing" secondItem="Cfz-Sg-edd" secondAttribute="trailing" constant="16" id="gmg-gu-DQc"/>
                             <constraint firstAttribute="trailing" secondItem="hTl-Bu-NZE" secondAttribute="trailing" constant="16" id="hBX-JR-Nhm"/>
                             <constraint firstItem="IYp-d0-Uwe" firstAttribute="trailing" secondItem="fye-wt-17K" secondAttribute="trailing" constant="21" id="k0S-N3-fMY"/>
+                            <constraint firstItem="IYp-d0-Uwe" firstAttribute="bottom" secondItem="fpR-Ha-yTs" secondAttribute="bottom" constant="20" id="lnT-xi-xRU"/>
                             <constraint firstItem="IYp-d0-Uwe" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="y8w-ZK-scf" secondAttribute="trailing" symbolic="YES" id="nXO-XN-J85"/>
                             <constraint firstItem="Oe3-aa-cft" firstAttribute="top" secondItem="bso-uJ-Rjg" secondAttribute="bottom" constant="19" id="ncP-gY-2VN"/>
                             <constraint firstItem="fye-wt-17K" firstAttribute="width" secondItem="fye-wt-17K" secondAttribute="height" id="nxW-Oc-niE"/>
@@ -1596,9 +1600,9 @@
                         <segue destination="WrD-3V-lqg" kind="presentation" identifier="goToFavorites" modalTransitionStyle="coverVertical" id="0sk-fY-XwB"/>
                         <segue destination="sU5-hO-sGr" kind="presentation" identifier="goToMyOrders" modalTransitionStyle="coverVertical" id="Peq-Oc-o36"/>
                         <segue destination="1MM-Jv-qHF" kind="presentation" identifier="goToTermsAndConditions" modalTransitionStyle="coverVertical" id="kJr-rT-2r6"/>
-                        <segue destination="RjP-Bl-fNB" kind="presentation" identifier="goToSettings" modalTransitionStyle="coverVertical" id="Sym-o5-PPY"/>
+                        <segue destination="RjP-Bl-fNB" kind="show" identifier="goToSettings" id="Sym-o5-PPY"/>
                         <segue destination="c0J-wo-ek5" kind="presentation" identifier="goToRegister" modalTransitionStyle="coverVertical" id="EYe-EB-5Io"/>
-                        <segue destination="Kep-MN-6Be" kind="show" identifier="goToKitchen" id="XMp-Q9-8on"/>
+                        <segue destination="Kep-MN-6Be" kind="presentation" identifier="goToKitchen" modalTransitionStyle="coverVertical" id="XMp-Q9-8on"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yG7-8L-Uy1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1727,7 +1731,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xci-cq-Pg7">
-                                <rect key="frame" x="21" y="309.66666666666669" width="374" height="1"/>
+                                <rect key="frame" x="16" y="309.66666666666669" width="379" height="1"/>
                                 <color key="backgroundColor" white="0.35999999999999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="RoB-ad-kpS"/>
@@ -1875,7 +1879,7 @@
                             <constraint firstAttribute="trailing" secondItem="Adb-hj-aUu" secondAttribute="trailing" constant="16" id="cGZ-tN-kEh"/>
                             <constraint firstItem="C83-lz-gxU" firstAttribute="top" secondItem="7zW-dJ-lAe" secondAttribute="bottom" constant="12" id="ckM-2K-a0F"/>
                             <constraint firstItem="D7x-QX-7G4" firstAttribute="top" secondItem="D9f-4V-Psu" secondAttribute="bottom" constant="4" id="dCb-v2-tQC"/>
-                            <constraint firstItem="Xci-cq-Pg7" firstAttribute="leading" secondItem="1ko-i9-kHh" secondAttribute="leadingMargin" constant="1" id="deb-HH-Iog"/>
+                            <constraint firstItem="Xci-cq-Pg7" firstAttribute="leading" secondItem="1ko-i9-kHh" secondAttribute="leadingMargin" constant="-4" id="deb-HH-Iog"/>
                             <constraint firstItem="U1r-3q-jVk" firstAttribute="trailing" secondItem="rSx-hP-OAf" secondAttribute="trailing" constant="20" id="e6d-Ho-UcB"/>
                             <constraint firstItem="C83-lz-gxU" firstAttribute="leading" secondItem="U1r-3q-jVk" secondAttribute="leading" constant="16" id="eog-EP-dgn"/>
                             <constraint firstItem="rgA-K2-nSL" firstAttribute="top" secondItem="bVK-5G-06d" secondAttribute="bottom" constant="4" id="f5E-aS-Uh1"/>
@@ -1922,7 +1926,7 @@
                         <outlet property="locationPickerTextField" destination="bVK-5G-06d" id="iHd-Za-Si7"/>
                         <outlet property="nameTextField" destination="FzC-gO-Bk6" id="3FP-dy-aCq"/>
                         <outlet property="saveButton" destination="CEC-cP-RwW" id="mdQ-Mu-64z"/>
-                        <segue destination="Kep-MN-6Be" kind="show" identifier="goToKitchen" id="90l-9m-Hkb"/>
+                        <segue destination="Kep-MN-6Be" kind="presentation" identifier="goToKitchen" modalTransitionStyle="coverVertical" id="90l-9m-Hkb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MJ7-3Z-eZZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2142,7 +2146,7 @@
             <objects>
                 <viewController id="usN-XS-n9u" customClass="ConfirmAddressViewController" customModule="Kershoman" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FRK-Vo-y8B">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9Z-8Q-IQe">
@@ -2983,7 +2987,7 @@
             <objects>
                 <viewController storyboardIdentifier="loginPopupVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rnG-1x-NTR" customClass="LoginPopup" customModule="Kershoman" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0Rc-WR-kQ1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EL5-Ra-bzR">
@@ -3670,11 +3674,11 @@
             <objects>
                 <viewController modalPresentationStyle="fullScreen" id="J61-4p-Gsh" customClass="Addresses" customModule="Kershoman" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="b5i-9M-UdB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uzU-gB-Eqx">
-                                <rect key="frame" x="0.0" y="64" width="414" height="778"/>
+                                <rect key="frame" x="0.0" y="96" width="414" height="800"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="su4-9U-B3g">
                                     <rect key="frame" x="0.0" y="176" width="414" height="44"/>
@@ -3811,17 +3815,17 @@
             <objects>
                 <viewController modalPresentationStyle="fullScreen" id="TYq-jW-clh" customClass="AddNewAddress" customModule="Kershoman" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HoP-JH-ALm">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gs9-XQ-vWU">
-                                <rect key="frame" x="154.66666666666666" y="66" width="104.99999999999997" height="21"/>
+                                <rect key="frame" x="154.66666666666666" y="98" width="104.99999999999997" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.93725490199999995" green="0.39607843139999999" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Area" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="nyg-qH-S1L">
-                                <rect key="frame" x="9" y="117" width="397" height="34"/>
+                                <rect key="frame" x="9" y="149" width="397" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -3829,7 +3833,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Address Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="WZx-67-n49">
-                                <rect key="frame" x="8" y="165" width="398" height="34"/>
+                                <rect key="frame" x="8" y="197" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="tel"/>
                                 <connections>
@@ -3837,7 +3841,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="aXI-uy-fUM">
-                                <rect key="frame" x="8" y="213" width="398" height="34"/>
+                                <rect key="frame" x="8" y="245" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="street-address"/>
                                 <connections>
@@ -3845,7 +3849,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Street" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="ySE-08-wqN">
-                                <rect key="frame" x="8" y="261" width="398" height="34"/>
+                                <rect key="frame" x="8" y="293" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -3853,7 +3857,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Bulilding No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="lZK-ea-e0W">
-                                <rect key="frame" x="8" y="309" width="398" height="34"/>
+                                <rect key="frame" x="8" y="341" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -3861,7 +3865,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Floor No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="HVr-RV-O3I">
-                                <rect key="frame" x="8" y="357" width="398" height="34"/>
+                                <rect key="frame" x="8" y="389" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
@@ -3869,7 +3873,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Landmark" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="ejy-1L-n1S">
-                                <rect key="frame" x="8" y="453" width="398" height="34"/>
+                                <rect key="frame" x="8" y="485" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -3877,7 +3881,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pt2-zC-TOj">
-                                <rect key="frame" x="73" y="507" width="268" height="44"/>
+                                <rect key="frame" x="73" y="539" width="268" height="44"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.39607843139999999" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="1eg-jc-ZGJ"/>
@@ -3897,7 +3901,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Apartment No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Dq4-g3-Mw9">
-                                <rect key="frame" x="8" y="405" width="398" height="34"/>
+                                <rect key="frame" x="8" y="437" width="398" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -4093,7 +4097,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HhC-hm-FhS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3819" y="1439"/>
+            <point key="canvasLocation" x="3888" y="1442"/>
         </scene>
         <!--RegisterVC-->
         <scene sceneID="ZSF-TP-Jfh">
@@ -4415,7 +4419,7 @@
                         <outlet property="locationPicker" destination="ZP9-ni-uUv" id="YRX-gU-PTW"/>
                         <outlet property="mobileNumberTF" destination="pJD-ZC-jR0" id="442-bO-zAK"/>
                         <outlet property="passwordTF" destination="tgp-vn-3AX" id="Og7-hB-tW9"/>
-                        <segue destination="Kep-MN-6Be" kind="show" identifier="goToKitchen" id="2tY-5t-pw6"/>
+                        <segue destination="Kep-MN-6Be" kind="presentation" identifier="goToKitchen" modalTransitionStyle="coverVertical" id="2tY-5t-pw6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bNd-Zh-hiI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4616,17 +4620,16 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7iz-PF-5KQ"/>
-        <segue reference="Kqy-dF-JLI"/>
+        <segue reference="3F8-1K-KeC"/>
         <segue reference="637-kg-JN9"/>
-        <segue reference="ak2-Mu-2ji"/>
+        <segue reference="rUJ-3x-F6r"/>
         <segue reference="KpW-O6-hlo"/>
         <segue reference="Sym-o5-PPY"/>
         <segue reference="wCE-Hq-ZB0"/>
         <segue reference="RYV-Hb-vny"/>
-        <segue reference="jU9-dO-ecS"/>
-        <segue reference="2tY-5t-pw6"/>
-        <segue reference="IJX-72-ZrM"/>
+        <segue reference="gUE-hO-U0H"/>
+        <segue reference="90l-9m-Hkb"/>
+        <segue reference="qui-cE-lS3"/>
         <segue reference="2y0-Fl-AU6"/>
     </inferredMetricsTieBreakers>
     <resources>

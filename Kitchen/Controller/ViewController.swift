@@ -21,19 +21,15 @@ class ViewController: UIViewController , UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
-        
         self.loginButton.layer.cornerRadius = self.view.frame.height * 0.082 * 0.5
     }
     
-    //Reload the view after checking the network connectivity and it is working
-    @objc func functionName() {
-        login()
+    @IBAction func registeButtonPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToRegister", sender: self)
     }
     
     @IBAction func skipButtonClicked(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "goToKitchen", sender: self)
+        performSegue(withIdentifier: "goToKitchen", sender: self)
     }
     
     @IBAction func loginPressed(_ sender: Any) {
@@ -45,7 +41,7 @@ extension ViewController {
     
     func login() {
         
-        self.view.isUserInteractionEnabled = false
+        view.isUserInteractionEnabled = false
         SVProgressHUD.show()
         DispatchQueue.main.async {
             
@@ -53,7 +49,7 @@ extension ViewController {
             let manager = Manager()
             manager.perform(serviceName: .login, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
                     
                     self.dismissSVProgress()
                     self.noInternetConnection()
@@ -83,11 +79,3 @@ extension ViewController {
         }
     }
 }
-
-
-
-
-
-
-
-

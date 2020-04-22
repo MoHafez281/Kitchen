@@ -14,6 +14,5 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var kitchenLabelView: UILabel!
     @IBOutlet weak var priceLabelView: UILabel!
     @IBOutlet weak var likesLabelView: UILabel!
-    
 }
 

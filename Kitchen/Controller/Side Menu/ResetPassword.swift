@@ -18,7 +18,6 @@ class ResetPassword: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func dismissPopup(_ sender: UIButton) {
@@ -54,7 +53,7 @@ extension ResetPassword {
             let manager = Manager()
             manager.perform(methodType: .put, useCustomeURL : true, urlStr: customeurl, serviceName: .updatePassword ,  parameters: nil) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if(error != nil) {
                     // show error
                     self.dismissSVProgress()
                     self.noInternetConnection()
@@ -74,11 +73,7 @@ extension ResetPassword {
                     self.displayAlertMessage(title: "", messageToDisplay: "Password Updated successfully")
                     self.dismiss(animated: true)
                 }
-                
             }
-            
         }
-        
     }
-    
 }
