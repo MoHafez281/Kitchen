@@ -1,6 +1,6 @@
 //
 //  MyOrders.swift
-//  Kitchen
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 4/6/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -23,9 +23,6 @@ class MyOrders: UIViewController , UITableViewDelegate , UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//      For dismissing loading view if coming back from view that ladoing data
-        SVProgressHUD.dismiss()
-
         //Reload the view after checking the network connectivity and it is working
         NotificationCenter.default.addObserver(self, selector: #selector(MyOrders.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
         
@@ -37,14 +34,14 @@ class MyOrders: UIViewController , UITableViewDelegate , UITableViewDataSource {
         getOrder()
     }
     
-    @IBAction func sideBarTapped(_ sender: Any) {
+    @IBAction func sideBarButtonPressed(_ sender: Any) {
         self.sideMenuController?.revealMenu()
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "summary"){
-            let vc = segue.destination as! Summary
+        
+        if (segue.identifier == "summary") {
+            let vc = segue.destination as! SummaryVC
             
             vc.isMyOrders = true
             if let order = sender as? Orders {
@@ -121,7 +118,7 @@ extension MyOrders {
             let manager = Manager()
             manager.perform(methodType: .post, serviceName: .getUserOrders ,  parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
 
                     self.displayAlertMessage(title: "Error", messageToDisplay: "Connection Error")
                     self.dismissSVProgress()
@@ -143,15 +140,9 @@ extension MyOrders {
                         //self.getorderList = Mapper<Orders>().mapArray(JSONObject: menus)!
                         self.tableView.reloadData()
                         self.dismissSVProgress()
-                        
                     }
-                    
                 }
-                
             }
-            
         }
-        
     }
-    
 }

@@ -7,7 +7,6 @@ target 'Kitchen' do
 
   # Pods for Kitchen
 
-
 pod 'SVProgressHUD'
 pod 'ChameleonFramework'
 pod 'SideMenuSwift'
@@ -19,6 +18,7 @@ pod 'IQKeyboardManagerSwift'
 pod 'ImageSlideshow', '~> 1.6'
 pod 'DLRadioButton', '~> 1.4'
 pod "ImageSlideshow/Alamofire"
+pod 'GooglePlaces'
 
 # Note it's NOT 'SideMenu'
 # https://github.com/kukushi/SideMenu

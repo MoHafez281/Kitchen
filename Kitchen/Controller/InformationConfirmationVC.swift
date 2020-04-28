@@ -1,6 +1,6 @@
 //
-//  ConfirmAddressViewController.swift
-//  Kitchen
+//  InformationConfirmationVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 3/30/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -10,7 +10,7 @@ import UIKit
 import ObjectMapper
 import DLRadioButton
 
-class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
+class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
     
     @IBOutlet weak var addTempMobileOutlet: UISwitch!
     @IBAction func addTempMobile(_ sender: UISwitch) {
@@ -46,9 +46,12 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(ConfirmAddressViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+//      Reload the view after checking the network connectivity and it is working
+        NotificationCenter.default.addObserver(self, selector: #selector(InformationConfirmationVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+//      Reload addressPickerView at ProfileVC & InformationConfirmationVC after a new address added or edited
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginPopupVC.functionName), name:NSNotification.Name(rawValue: "AddressAdded/Edited"), object: nil)
         
+        AddressesVC.dismissBackButtonAddressesVC = 2 //If user go to AddressesVC from InformationConfirmatioVC, AddressesVC will appear as presenation style so this var to let back button act as dismiss else act normally
         
         mobileNumberTextFiled.delegate = self
         
@@ -60,9 +63,9 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
         let hour = calendar.component(.hour, from: Date())
         timePicker.datePickerMode = .time
         
-        // 11 to 20 is the kitchen working hours **
-        if(hour >= 11 && hour <= 20) {
-            // in case if he ordering while the kitchen is open, user has two options now or later
+//      11 to 20 is the kitchen working hours **
+        if (hour >= 11 && hour <= 20) {
+//          in case if he ordering while the kitchen is open, user has two options now or later
             nowRadioButton.isSelected = true
             scheduleView.isHidden = true
             datePicker.minimumDate = Date()
@@ -70,15 +73,15 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
             dateFormatter.dateFormat =  "HH:mm"
             dateFormatter.locale = .current
             dateFormatter.timeZone = .current
-            // below code is to handle later option pickers
-            // time picker for later max order time is 20 **
+//          below code is to handle later option pickers
+//          time picker for later max order time is 20 **
             let max = dateFormatter.date(from: "20:00")
             
             if(hour <= 18) {
-                // the user is selecting time while his local time is less than 6:00 PM
+//              the user is selecting time while his local time is less than 6:00 PM
                 timePicker.minimumDate = calendar.date(byAdding: .minute, value: 90, to: Date())
             } else {
-                // the user is selecting time while his local time is bigger than 6:00 PM so he can't shedule order for today.
+//              the user is selecting time while his local time is bigger than 6:00 PM so he can't shedule order for today.
                 let min = dateFormatter.date(from: "11:00")
                 timePicker.minimumDate = min
                 let date = calendar.date(byAdding: .day, value: 1, to: Date())
@@ -89,7 +92,7 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
             
         } else {
             
-            // in case if he ordering while the kitchen is closed so user has only one option "later"
+//          in case if he ordering while the kitchen is closed so user has only one option "later"
             laterRadioButton.isSelected = true
             nowRadioButton.isEnabled = false
             scheduleView.isHidden = false
@@ -97,7 +100,7 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
             dateFormatter.dateFormat =  "HH:mm"
             dateFormatter.locale = .current
             dateFormatter.timeZone = .current
-            // this is the max and min time for the kitchen the min is kitchen opening hour + 90 for order prepration and delivery
+//          this is the max and min time for the kitchen the min is kitchen opening hour + 90 for order prepration and delivery
             let min = dateFormatter.date(from: "12:30")
             let max = dateFormatter.date(from: "20:00")
             timePicker.minimumDate = min!
@@ -105,7 +108,7 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
             timePicker.date = min!
             
             if(hour >= 20) {
-                // he is making order aftre the working hours
+//              he is making order aftre the working hours
                 let date = calendar.date(byAdding: .day, value: 1, to: Date())
                 datePicker.minimumDate = date
                 
@@ -124,7 +127,8 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
         datePicker.datePickerMode = .date
     }
     
-    //Reload the view after checking the network connectivity and it is working
+//   Reload the view after checking the network connectivity and it is working
+//   Reload addressPickerView after a new address added or edited
     @objc func functionName() {
         getAddresses()
     }
@@ -154,6 +158,7 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
         // check for all the required parameters
         
         if selectedAdress?.area == "Maadi" {
+            
             if mobileNumberTextFiled.text == "" {
             
                 displayAlertMessage(title: "", messageToDisplay: "Please, enter a temp mobile number")
@@ -163,7 +168,9 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
                 displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number")
                 
             } else if (laterRadioButton.isSelected) {
+                
                 if dateTF.text == "" || timeTF.text == "" {
+                    
                     displayAlertMessage(title: "", messageToDisplay: "Please, Fill the date & the time")
                     placeholder(textFields: dateTF, placeHolderName: "Select the date", color: .red)
                     placeholder(textFields: timeTF, placeHolderName: "Select the time", color: .red)
@@ -179,7 +186,6 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
         } else {
             displayAlertMessage(title: "", messageToDisplay: "Select or add address within the area, Available in Maadi Only")
             addressTextField.text = ""
-            placeholder(textFields: addressTextField, placeHolderName: "Select or add address within the area", color: .red)
         }
     }
     
@@ -188,11 +194,11 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
         if(segue.identifier == "goToSummary") {
             
             textSwitch = mobileNumberTextFiled.text!
-            let vc = segue.destination as! Summary
+            let vc = segue.destination as! SummaryVC
             vc.addressId = selectedAdress!.id
             vc.detailedaddressConfirmAddress = (selectedAdress?.fullAddress)! + ", " + (selectedAdress?.street)! + ", " + (selectedAdress?.landmark)! + ", " + (selectedAdress?.area)! + ", " + (selectedAdress?.buldingNumber)! + ", " + (selectedAdress?.floor)! + ", " + (selectedAdress?.aparmentNumber)!
             
-            if(nowRadioButton.isSelected) {
+            if (nowRadioButton.isSelected) {
                 
                 vc.craetionTime = formatDateToSend(date: Date()) + " " + formatTime(date: Date())
                 vc.orderTime = formatDateToSend(date: Date()) + " " + formatTime(date: Calendar.current.date(byAdding: .minute, value: 90, to: Date())!)
@@ -211,7 +217,7 @@ class ConfirmAddressViewController: UIViewController , UITextFieldDelegate {
     }
 }
 
-extension ConfirmAddressViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension InformationConfirmationVC: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -231,9 +237,9 @@ extension ConfirmAddressViewController: UIPickerViewDelegate, UIPickerViewDataSo
     }    
 }
 
-extension ConfirmAddressViewController {
+extension InformationConfirmationVC {
     
-    func getAddresses(){
+    func getAddresses() {
         
         DispatchQueue.main.async {
             
@@ -244,23 +250,29 @@ extension ConfirmAddressViewController {
                 if(error != nil){
                     
                     self.noInternetConnection()
-                  //  self.addressTextField.isEnabled = false
+                    self.addressTextField.isEnabled = false //If no connection or no address added must be disabled else app will crash
                     
                 } else {
                     
                     let jsonDict = JSON as? NSDictionary
                     let getAddressResponse = jsonDict!["error"]
                     let getAddressMessage = jsonDict!["error_msg"]
+                    
                     if (getAddressResponse as? Int == 1) {
                         
+                        AddressesVC.addressAlartMessageAlreadyShowed = 2 //If no address message appear not appear it again while user add an address
+                        self.addressTextField.isEnabled = false //If no connection or no address added must be disabled else app will crash
                         self.displayAlertMessage(title: "Error", messageToDisplay: getAddressMessage as! String)
+                        self.placeholder(textFields: self.addressTextField, placeHolderName: "No address added, please add one.", color: .red)
                         
                     } else {
                         
                         let address = jsonDict!["addresses"]
+                        self.addressTextField.isEnabled = true 
+                        self.placeholder(textFields: self.addressTextField, placeHolderName: "Address", color: .lightGray)
                         self.addressList = Mapper<AdressModel>().mapArray(JSONObject: address)!
                         
-                        if(self.addressList.count > 0) {
+                        if (self.addressList.count > 0) {
                             
                             self.selectedAdress = self.addressList[0]
                             self.addressTextField.text = self.addressList[0].addressName

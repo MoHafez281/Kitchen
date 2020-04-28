@@ -1,6 +1,6 @@
 //
-//  Summary.swift
-//  Kitchen
+//  SummaryVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 4/6/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import SVProgressHUD
 
-class Summary: UIViewController , UITableViewDataSource , UITableViewDelegate {
+class SummaryVC: UIViewController , UITableViewDataSource , UITableViewDelegate {
     
     
     
@@ -39,7 +39,6 @@ class Summary: UIViewController , UITableViewDataSource , UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     var isMyOrders = false
-    
     var total : Int = 0
     var orderTime : String = ""
     var craetionTime : String = ""
@@ -63,7 +62,7 @@ class Summary: UIViewController , UITableViewDataSource , UITableViewDelegate {
         receiptView.layer.borderWidth = 0.5
         totalView.layer.borderWidth = 0.5
         
-        if(isMyOrders) {
+        if (isMyOrders) {
             
             confirmButton.isHidden = true
             ProceedStackView.isHidden = true
@@ -177,7 +176,7 @@ class Summary: UIViewController , UITableViewDataSource , UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SummaryCell
         cell.selectionStyle = UITableViewCell.SelectionStyle.none
         
-        if(isMyOrders){
+        if (isMyOrders) {
             
             if(myOrder != nil) {
                 
@@ -221,7 +220,7 @@ class Summary: UIViewController , UITableViewDataSource , UITableViewDelegate {
     
 }
 
-extension Summary {
+extension SummaryVC {
     
     func makeOrder(){
         
@@ -251,14 +250,14 @@ extension Summary {
                            "total": self.subtotal + self.delivery - self.discount,
                            "dishes": dishes,
                            "quantities": qties,
-                "options" : "asd",
-                "sides1" : "asd",
-                "sides2" : "asd",
-                "sizes" : "asd",
-                "eta" : "asd",
-                "comment" : "asd",
-                "points" : "asd"] as [String: AnyObject]
-                            
+                           "options" : "asd",
+                           "sides1" : "asd",
+                           "sides2" : "asd",
+                           "sizes" : "asd",
+                           "eta" : "asd",
+                           "comment" : "asd",
+                           "points" : "asd"] as [String: AnyObject]
+                                
 
             let manager = Manager()
             manager.perform(serviceName: .makeOrder, parameters: params) { (JSON, error) -> Void in

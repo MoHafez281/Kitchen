@@ -1,6 +1,6 @@
 //
-//  CollectionViewController.swift
-//  Kitchen
+//  HomeMenuVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 1/6/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -15,12 +15,12 @@ import ObjectMapper
 import ImageSlideshow
 import SVProgressHUD
 
-class CollectionViewController: UIViewController , UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
+class HomeMenuVC: UIViewController , UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     
     @IBOutlet weak var categoryCV: UICollectionView!
     @IBOutlet weak var cartButton: UIBarButtonItem!
     @IBOutlet weak var imageSlider: ImageSlideshow!
-    @IBOutlet weak var pickerTextField: UITextField!
+    @IBOutlet weak var locationPickerTF: UITextField!
     @IBOutlet weak var menuCV: UICollectionView!
     @IBOutlet weak var dropDownMenuIcon: UIView!
             
@@ -29,17 +29,18 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
     var allMenu : Menu?
     let host = "http://52.15.188.41/cookhouse/images/"
     let location = ["", "October", "Dokki", "Giza" , "Nasr City" , "Smart Village" , "Zamalek" , "Agouza" , "Maadi"]
-    var x : String = ""
     var categoryList = [Category]()
     var selectedCategory : Category?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        AddToCartPopupVC.favButtonIsDiable = 1 //To check if user on FavouritesVC so favorite buton will be hidden, else if user on HomeMenuVC favorite button will be appear
+
         dropDownMenuIcon.isHidden = true
         
 //      Reload the view after checking the network connectivity and it is working
-        NotificationCenter.default.addObserver(self, selector: #selector(CollectionViewController.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeMenuVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
                 
         imageSlider.setImageInputs([ AlamofireSource(urlString: host + "food.jpeg" )!,
                                      AlamofireSource(urlString: host + "pizza.jpg" )!,
@@ -53,9 +54,9 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         
         let pickerView = UIPickerView()
         pickerView.delegate = self
-        pickerTextField.inputView = pickerView
-        pickerTextField.isEnabled = false
-        pickerTextField.text = "Available in Maadi Only, Coming Soon"
+        locationPickerTF.inputView = pickerView
+        locationPickerTF.isEnabled = false
+        locationPickerTF.text = "Available in Maadi Only, Coming Soon"
         
         getCategories()
     }
@@ -76,7 +77,7 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    @IBAction func menuButton(_ sender: Any) {
+    @IBAction func sideBarButtonPressed(_ sender: Any) {
         self.sideMenuController?.revealMenu()
     }
     
@@ -92,11 +93,12 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if (collectionView == menuCV) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! HomeMenuCell
             let dishes = menuList[indexPath.item]
             
             cell.kitchenLabelView.text! = dishes.name
-            cell.priceLabelView.text! = "\(dishes.price)LE"
+            cell.priceLabelView.text! = "\(dishes.price) EGP"
             cell.likesLabelView.text! = "\(dishes.likes)"
             
             if (dishes.image != "") {
@@ -112,20 +114,20 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
             
         } else {
             
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CategoryCVCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CategoriesCell
             let category = categoryList[indexPath.item]
-            cell.title.text = category.title
+            cell.titleLabel.text = category.title
             
             if (selectedCategory != nil) {
                 
                 if (selectedCategory!.id == category.id) {
                     
-                    cell.title.textColor = #colorLiteral(red: 0.9581589103, green: 0.4826408029, blue: 0.2752729356, alpha: 1)
+                    cell.titleLabel.textColor = #colorLiteral(red: 0.9581589103, green: 0.4826408029, blue: 0.2752729356, alpha: 1)
                     cell.underlineView.backgroundColor = #colorLiteral(red: 0.9581589103, green: 0.4826408029, blue: 0.2752729356, alpha: 1)
                     
                 } else {
                     
-                    cell.title.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+                    cell.titleLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
                     cell.underlineView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 }
             }
@@ -170,25 +172,27 @@ class CollectionViewController: UIViewController , UICollectionViewDelegate , UI
         
         if segue.identifier == "InfoView" {
             
-            let popupVC = segue.destination as! Popup2ViewController
+            let popupVC = segue.destination as! AddToCartPopupVC
             popupVC.allMenuPopup = allMenu
             popupVC.reloadView = { (Bool) in
                 
                 if (Bool) {
+                    
                     if (User.shared.cart.count > 0) {
                         self.cartButton.image = #imageLiteral(resourceName: "cart-filled")
                     } else {
                         self.cartButton.image = #imageLiteral(resourceName: "cart")
                     }
                     self.navigationController?.setNavigationBarHidden(false, animated: false)
-                    self.getMenu()
+//                   To refersh the Menu after add to cart, as reload data again if user down in the view that will get it up again
+                    //self.getMenu()
                 }
             }
         }
     }
 }
 
-extension CollectionViewController : UIPickerViewDelegate , UIPickerViewDataSource {
+extension HomeMenuVC : UIPickerViewDelegate , UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -214,18 +218,16 @@ extension CollectionViewController : UIPickerViewDelegate , UIPickerViewDataSour
             present(alert, animated: true, completion: nil)
             selectedLocation = "Maadi"
         }
-        pickerTextField.text = selectedLocation
+        locationPickerTF.text = selectedLocation
         getMenu()
     }
 }
 
-extension CollectionViewController {
+extension HomeMenuVC {
     
     func getMenu() {
         
-        navigationController?.navigationBar.isUserInteractionEnabled = false
-        view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
             let params  = ["category" : self.selectedCategory!.id ,"location" : self.selectedLocation ?? "Maadi"] as [String: AnyObject]
@@ -250,9 +252,9 @@ extension CollectionViewController {
                         
                     } else {
                         
+                        self.dismissSVProgress()
                         let menus = jsonDict!["dishes"]
                         self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
-                        self.dismissSVProgress()
 //                      For making collectionview reload with animation
                         self.menuCV.performBatchUpdates (
                           {
@@ -270,13 +272,11 @@ extension CollectionViewController {
     }
 }
 
-extension CollectionViewController {
+extension HomeMenuVC {
     
     func getCategories() {
         
-        navigationController?.navigationBar.isUserInteractionEnabled = false
-        view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
             let manager = Manager()
@@ -298,17 +298,18 @@ extension CollectionViewController {
                         
                         self.dismissSVProgress()
                         self.displayAlertMessage(title: "Error", messageToDisplay: categoriesMessage as! String)
-                    }
-                    else {
+                        
+                    } else {
                         
                         let categoyArray = Mapper<Category>().mapArray(JSONObject: categories)!
                         self.categoryList = categoyArray
                         
                         if (self.categoryList.count > 0) {
                             
+                            self.dismissSVProgress()
                             self.selectedCategory = self.categoryList[0]
                             self.getMenu()
-                            self.dismissSVProgress()
+                            
                         }
                         self.dismissSVProgress()
                         self.categoryCV.performBatchUpdates(

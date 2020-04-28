@@ -1,6 +1,6 @@
     //
     //  Profile.swift
-    //  Kitchen
+    //  Kershoman
     //
     //  Created by Mohamed Hafez on 2/22/19.
     //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -13,7 +13,7 @@
     import ObjectMapper
     import SVProgressHUD
     
-    class Profile: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource, UITextFieldDelegate {
+    class ProfileVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource, UITextFieldDelegate {
         
         @IBOutlet weak var nameTextField: UITextField!
         @IBOutlet weak var emailTextField: UITextField!
@@ -35,7 +35,7 @@
             super.viewDidLoad()
             
 //          Reload the view after checking the network connectivity and it is working
-            NotificationCenter.default.addObserver(self, selector: #selector(Profile.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(ProfileVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
             
             emailTextField.isEnabled = false //This field cannot be changed
             defaultMobileNumberTextField.isEnabled = false //This field cannot be changed
@@ -53,8 +53,8 @@
             datePicker?.maximumDate = maximumYear
             datePicker?.minimumDate = minimumYear
             datePicker?.datePickerMode = .date
-            datePicker?.addTarget(self, action: #selector(Profile.dateChanged(datePicker:)), for: .valueChanged)
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(Profile.viewTapped(gestureRecognizer:)))
+            datePicker?.addTarget(self, action: #selector(ProfileVC.dateChanged(datePicker:)), for: .valueChanged)
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileVC.viewTapped(gestureRecognizer:)))
             view.addGestureRecognizer(tapGesture)
             birthday.inputView = datePicker
             

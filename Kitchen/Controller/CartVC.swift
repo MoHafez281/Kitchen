@@ -1,6 +1,6 @@
 //
-//  Cart.swift
-//  Kitchen
+//  CartVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 3/13/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -13,9 +13,9 @@ import SwiftyJSON
 import ObjectMapper
 import SVProgressHUD
 
-class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
+class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
-    @IBOutlet weak var TV: UITableView!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var subTotalPriceLabel: UILabel!
     @IBOutlet weak var proceedButton: UIButton!
     @IBOutlet weak var discountLabel: UILabel!
@@ -108,7 +108,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(Cart.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CartVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
 
         promoCodeTF.isHidden = true
         promoCodeView.isHidden = true
@@ -141,13 +141,13 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
 //            UIApplication.shared.statusBarStyle = .default
 //        }
     }
-    
-    @IBAction func backButtonPressed(_ sender: UIButton) {
+    @IBAction func test(_ sender: UIButton) {
+
         appDelegate.setRoot(storyBoard: .main, vc: .home)
-        self.animationWithAppDelegate()
+        animationWithAppDelegate()
     }
     
-    @IBAction func removeButtonClicked(_ sender: UIButton) {
+    @IBAction func removeIteamsButtonPressed(_ sender: UIButton) {
         
         if User.shared.cart.count < 1 {
             
@@ -159,7 +159,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
             let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
                 User.shared.cart.removeAll()
                 User.shared.saveData()
-                self.TV.reloadData()
+                self.tableView.reloadData()
                 self.updateTotal()
             }
             let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
@@ -171,7 +171,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     
     @IBAction func proceedButtonPressed(_ sender: Any) {
         
-        if(User.shared.isRegistered()) {
+        if (User.shared.isRegistered()) {
             
             if User.shared.cart.count == 0 {
                 displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
@@ -208,18 +208,19 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
         }
     }
     
-    @IBAction func PromoCodeButtonCliked(_ sender: DLRadioButton) {
+    @IBAction func promoCodeButtonPressed(_ sender: DLRadioButton) {
         isChecked = !isChecked
     }
     
-    @IBAction func PointsButtonCliked(_ sender: DLRadioButton) {
+    @IBAction func pointsButtonPressed(_ sender: DLRadioButton) {
         isPointsChecked = !isPointsChecked
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if(segue.identifier == "goToConfirmPopup"){
-            let vc = segue.destination as! ConfirmAddressViewController
+        if (segue.identifier == "goToConfirmPopup") {
+            
+            let vc = segue.destination as! InformationConfirmationVC
             for item in User.shared.cart {
                 dishList.append(["id" : item.id,
                                  "quantity": item.qty])
@@ -231,7 +232,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if User.shared.cart.count == 0 {
-//            displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
+//          displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
         }
         return User.shared.cart.count
     }
@@ -272,28 +273,30 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     }
     
     
-    @objc func incrmentButtonclicked(_ sender : UIButton){
+    @objc func incrmentButtonclicked(_ sender : UIButton) {
         
-        if(sender.tag >= 100){
+        if (sender.tag >= 100) {
+            
             User.shared.cart[sender.tag - 100].qty = User.shared.cart[sender.tag - 100].qty + 1
             User.shared.saveData()
             
-            let cell = TV.cellForRow(at: IndexPath(row: sender.tag - 100, section: 0)) as! CartCell
+            let cell = tableView.cellForRow(at: IndexPath(row: sender.tag - 100, section: 0)) as! CartCell
             cell.quantityLabel.text = "\(User.shared.cart[sender.tag - 100].qty)"
             cell.priceLabel.text = "\(Int(User.shared.cart[sender.tag - 100].qty) * Int(User.shared.cart[sender.tag - 100].price)!)"
             updateTotal()
         }
     }
     
-    @objc func decrementButtonclicked(_ sender : UIButton){
-        if(sender.tag >= 100){
+    @objc func decrementButtonclicked(_ sender : UIButton) {
+        
+        if (sender.tag >= 100) {
             
             if User.shared.cart[sender.tag - 100].qty > 1 {
                 
                 User.shared.cart[sender.tag - 100].qty = User.shared.cart[sender.tag - 100].qty - 1
                 User.shared.saveData()
                 
-                let cell = TV.cellForRow(at: IndexPath(row: sender.tag - 100, section: 0)) as! CartCell
+                let cell = tableView.cellForRow(at: IndexPath(row: sender.tag - 100, section: 0)) as! CartCell
                 cell.quantityLabel.text = "\(User.shared.cart[sender.tag - 100].qty)"
                 cell.priceLabel.text = "\(Int(User.shared.cart[sender.tag - 100].qty) * Int(User.shared.cart[sender.tag - 100].price)!)"
                 updateTotal()
@@ -357,7 +360,7 @@ class Cart: UIViewController , UITableViewDelegate , UITableViewDataSource {
     }
 }
 
-extension Cart {
+extension CartVC {
     
     func checkPromoCode() {
         
@@ -369,7 +372,6 @@ extension Cart {
                 
                 if(error != nil) {
                     
-                    self.dismissSVProgress()
                     self.noInternetConnection()
                     
                 } else {
@@ -382,7 +384,6 @@ extension Cart {
                         
                         if self.promoCodeTF.text?.count == 0 {
                             
-                            self.dismissSVProgress()
                             self.notPromoCodeImage.isHidden = true
                             self.promoCodeImage.isHidden = true
                             self.subTotalPriceLabel.text = "\(self.subTotal)"
@@ -391,7 +392,6 @@ extension Cart {
                             
                         } else {
                             
-                        self.dismissSVProgress()
                         self.notPromoCodeImage.isHidden = false
                         self.promoCodeImage.isHidden = true
                         self.subTotalPriceLabel.text = "\(self.subTotal)"
@@ -401,7 +401,6 @@ extension Cart {
                         
                     } else {
                         
-                        self.dismissSVProgress()
                         self.promoCodeImage.isHidden = false
                         self.notPromoCodeImage.isHidden = true
                         self.discount = promoCodeDisocunt as! Double

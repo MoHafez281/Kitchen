@@ -1,5 +1,5 @@
 //
-//  Addresses.swift
+//  AddressesVC.swift
 //  Kershoman
 //
 //  Created by Mohamed Hafez on 4/6/19.
@@ -11,21 +11,22 @@ import ObjectMapper
 
 class AddressesVC: UIViewController {
 
-    var addressesList = [AdressModel]()
-    static var dismissBackButton : Int = 1 //If user go to AddressesVC from InformationConfirmatioVC, AddressesVC will appear as presenation style so this var to let back button act as dismiss else act normally
+    @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var tv: UITableView!
-     
+    var addressesList = [AdressModel]()
+    static var dismissBackButtonAddressesVC : Int = 1 //If user go to AddressesVC from InformationConfirmatioVC, AddressesVC will appear as presenation style so this var to let back button act as dismiss else act normally
+    static var addressAlartMessageAlreadyShowed : Int = 1 //If no address message appear not appear it again while user add an address
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Reload the view after checking the network connectivity and it is working
+//      Reload the view after checking the network connectivity and it is working
         NotificationCenter.default.addObserver(self, selector: #selector(AddressesVC.functionName), name:NSNotification.Name(rawValue: "NotificationsID"), object: nil)
 
-        tv.reloadData()
+        tableView.reloadData()
     }
     
-     //Reload the view after checking the network connectivity and it is working
+//  Reload the view after checking the network connectivity and it is working
     @objc func functionName() {
         getAddresses()
     }
@@ -36,9 +37,9 @@ class AddressesVC: UIViewController {
     
     @IBAction func backButtonClicked(_ sender: UIBarButtonItem) {
         
-        if(self.navigationController!.viewControllers.count > 1) {
+        if (self.navigationController!.viewControllers.count > 1) {
             self.navigationController?.popViewController(animated: true)
-        } else if (AddressesVC.dismissBackButton == 2) {
+        } else if (AddressesVC.dismissBackButtonAddressesVC == 2) {
             dismiss(animated: true)
 //          If user go to AddressesVC from InformationConfirmatioVC, AddressesVC will appear as presenation style so this var to let back button act as dismiss else act normally
         } else {
@@ -48,7 +49,7 @@ class AddressesVC: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "EditAddress") {
-            let vc = segue.destination as! AddNewAddress
+            let vc = segue.destination as! AddNewAddressVC
             if let selectedAddress = sender as? AdressModel {
                 vc.selectedAddress = selectedAddress
             }
@@ -56,14 +57,15 @@ class AddressesVC: UIViewController {
     }
 }
 
-extension AddressesVC :UITableViewDelegate , UITableViewDataSource {
+extension AddressesVC: UITableViewDelegate , UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return addressesList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! AddressTVCell
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! AddressTVCell
         let address = addressesList[indexPath.row]
         
         cell.addressNameLabel.text = address.addressName
@@ -83,16 +85,16 @@ extension AddressesVC :UITableViewDelegate , UITableViewDataSource {
             
             removeAddress(addressId: addressesList[indexPath.row].id)
             addressesList.remove(at: indexPath.row)
-    
-            tv.reloadData()
+            tableView.reloadData()
         }
     }
 }
 
 extension AddressesVC {
     
-    func getAddresses(){
+    func getAddresses() {
         
+        showSVProgress()
         DispatchQueue.main.async {
             
             let params  = ["user_id" : User.shared.id ] as [String: AnyObject]
@@ -101,24 +103,32 @@ extension AddressesVC {
                 
                 if(error != nil) {
                     
-                    // show error
                     self.dismissSVProgress()
                     self.noInternetConnection()
                     
                 } else {
                     
                     let jsonDict = JSON as? NSDictionary
+                    let getAddressesResponse = jsonDict!["error"] as! Bool
+                    let getAdressesMessage = jsonDict!["error_msg"]
                     
-                    let menusResponse = jsonDict!["error"] as! Bool
-                    if(menusResponse){
+                    if (getAddressesResponse) {
                         
-                        self.displayAlertMessage(title: "", messageToDisplay: "\(menusResponse)")
-
+                        self.dismissSVProgress()
+                        if (AddressesVC.addressAlartMessageAlreadyShowed == 1) {
+                            
+                            self.displayAlertMessage(title: "Error", messageToDisplay: getAdressesMessage as! String)
+                        } else {
+                            //AlertMessage will not appear
+                        }
+                        
                     } else {
                         
+                        self.dismissSVProgress()
+                        AddressesVC.addressAlartMessageAlreadyShowed = 1 //If no address message appear not appear it again while user add an address
                         let address = jsonDict!["addresses"]
                         self.addressesList = Mapper<AdressModel>().mapArray(JSONObject: address)!
-                        self.tv.reloadData()
+                        self.tableView.reloadData()
                     }
                 }
             }
@@ -126,6 +136,8 @@ extension AddressesVC {
     }
     
     func removeAddress(addressId : Int) {
+        
+        showSVProgress()
         DispatchQueue.main.async {
             
             var customeurl = hostName + "remove_address/\(addressId)"
@@ -135,23 +147,26 @@ extension AddressesVC {
             manager.perform(methodType: .delete, useCustomeURL : true, urlStr: customeurl, serviceName: .addAddress ,  parameters: nil) { (JSON, error) -> Void in
             
                 if(error != nil) {
+                    
                     self.dismissSVProgress()
                     self.noInternetConnection()
+                    
                 } else {
                     
                     let jsonDict = JSON as? NSDictionary
-                    let jsonError = jsonDict!["error"] as! Bool
-                    if(jsonError){
+                    let removeAddressError = jsonDict!["error"] as! Bool
+                    if (removeAddressError) {
                         
-                        self.displayAlertMessage(title: "", messageToDisplay: "\(jsonError)")
+                        self.dismissSVProgress()
+                        self.displayAlertMessage(title: "", messageToDisplay: "\(removeAddressError)")
                         
                     } else {
                         
-                        
+                        self.dismissSVProgress()
+                        //removed
                     }
                 }
             }
         }
     }
 }
-

@@ -1,6 +1,6 @@
 //
-//  ForgetPasswordViewController.swift
-//  Kitchen
+//  ForgotPasswordVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 12/26/18.
 //  Copyright © 2018 Mohamed Hafez. All rights reserved.
@@ -10,12 +10,12 @@ import UIKit
 import ObjectMapper
 import SVProgressHUD
 
-class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
+class ForgotPasswordVC: UIViewController , UITextFieldDelegate{
     
     @IBOutlet weak var mobileNumberView: UIView!
     @IBOutlet weak var authCodeTF: UITextField!
-    @IBOutlet weak var enterNewPasswordTF: UITextField!
-    @IBOutlet weak var enterMobileNumber: UITextField!
+    @IBOutlet weak var newPasswordTF: UITextField!
+    @IBOutlet weak var mobileNumberTF: UITextField!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
     
@@ -23,33 +23,42 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
         super.viewDidLoad()
         
         mobileNumberView.isHidden = false
-        self.enterMobileNumber.delegate = self
+        self.mobileNumberTF.delegate = self
     }
     
-    @IBAction func dismissClicked(_ sender: UIButton) {
+    @IBAction func dismissForgotPasswordVC(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func sendButtonClicked(_ sender: UIButton) {
+    @IBAction func changePlaceHolderColor(_ sender: UITextField) {
+        if sender.tag == 0 {
+            placeholder(textFields: mobileNumberTF, placeHolderName: "Mobile Number", color: .lightGray)
+        } else if sender.tag == 1 {
+            placeholder(textFields: authCodeTF, placeHolderName: "Authentication Code", color: .lightGray)
+        } else if sender.tag == 2 {
+            placeholder(textFields: newPasswordTF, placeHolderName: "New Password", color: .lightGray)
+        }
+    }
+    
+    @IBAction func sendButtonPressed(_ sender: UIButton) {
                 
         if (mobileNumberView.isHidden == false) {
             
-            if ((enterMobileNumber.text?.isEmpty)!) {
+            if ((mobileNumberTF.text?.isEmpty)!) {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please Enter your phone number.")
+                placeholder(textFields: mobileNumberTF, placeHolderName: "Mobile Number", color: .red)
                 
-            } else if (enterMobileNumber.text?.count)! > 11 || (enterMobileNumber.text?.count)! < 11 {
+            } else if (mobileNumberTF.text?.count)! > 11 || (mobileNumberTF.text?.count)! < 11 {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please enter a valid phone number." )
+                displayAlertMessage(title: "", messageToDisplay: "Please enter a valid mobile number." )
                 
             } else {
                 
-                let alert = UIAlertController(title: "", message: "Are you sure you entered the registered mobile number?" , preferredStyle: .alert)
+                let alert = UIAlertController(title: "Warning", message: "Are you sure you entered the registered mobile number?" , preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
                     
                     self.forgotPassword()
                 }
-                
                 let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
                 alert.addAction(cancel)
                 alert.addAction(okAction)
@@ -58,15 +67,12 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
             
         } else {
             
-            if ((authCodeTF.text?.isEmpty)!) {
+            if ((authCodeTF.text?.isEmpty)!) || ((newPasswordTF.text?.isEmpty)!) {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please enter the authentication code you recieved." )
+                placeholder(textFields: authCodeTF, placeHolderName: "Authentication Code", color: .red)
+                placeholder(textFields: newPasswordTF, placeHolderName: "New Password", color: .red)
                 
-            } else if ((enterNewPasswordTF.text?.isEmpty)!) {
-                
-                displayAlertMessage(title: "", messageToDisplay: "Please enter your new password." )
-                
-            } else if (enterNewPasswordTF.text?.count)! < 8 || (enterNewPasswordTF.text?.count)! > 12 {
+            } else if (newPasswordTF.text?.count)! < 8 || (newPasswordTF.text?.count)! > 12 {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Password lenght must be minimum of 8 characters long & maximum of 12 characters long." )
                 
@@ -79,7 +85,7 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        if textField == enterMobileNumber {
+        if textField == mobileNumberTF {
             let allowedCharacters = CharacterSet.decimalDigits //For digits only
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
@@ -88,15 +94,14 @@ class ForgetPasswordViewController: UIViewController , UITextFieldDelegate{
     }
 }
 
-extension ForgetPasswordViewController {
+extension ForgotPasswordVC {
     
     func forgotPassword() {
         
-        self.view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
-            let params  = ["phone_number" : "2\(self.enterMobileNumber.text!)" ] as [String: AnyObject]
+            let params  = ["phone_number" : "2\(self.mobileNumberTF.text!)" ] as [String: AnyObject]
             let customeurl = "http://52.15.188.41/cookhouse/nexmo/forgot_password.php"
             let manager = Manager()
             manager.perform(methodType: .post, useCustomeURL : true, urlStr: customeurl, serviceName: .updatePassword ,  parameters: params) { (JSON, error) -> Void in
@@ -110,18 +115,24 @@ extension ForgetPasswordViewController {
                     
                     let jsonDict = JSON as? NSDictionary
                     let forgotPasswordResponse = jsonDict!["error"]
-                    let forgotPasswordMessage = jsonDict?["status"]
+//                  let forgotPasswordMessage = jsonDict?["status"]
                     
                     if (forgotPasswordResponse as? Int == 1) {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred, try again later")
+                        self.displayAlertMessage(title: "Error", messageToDisplay: "Some error occurred, try again later.")
                         
                     } else {
                         
                         self.dismissSVProgress()
-                        self.mobileNumberView.isHidden = true
-                        self.sendButton.setTitle("Reset", for: .normal)
+                        let alert = UIAlertController(title: "Forgot Password", message: "An authentication code has been sent to you via SMS" , preferredStyle: .alert)
+                          alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                              
+                            self.mobileNumberView.isHidden = true
+                            self.sendButton.setTitle("Reset", for: .normal)
+                            
+                          }))
+                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }
@@ -130,11 +141,10 @@ extension ForgetPasswordViewController {
     
     func authCode() {
         
-        self.view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
-            let params  = ["password" : self.enterNewPasswordTF.text! ,"mobile" : self.enterMobileNumber.text! , "rand": self.authCodeTF.text! ] as [String: AnyObject]
+            let params  = ["password" : self.newPasswordTF.text! ,"mobile" : self.mobileNumberTF.text! , "rand": self.authCodeTF.text! ] as [String: AnyObject]
             let manager = Manager()
             manager.perform(methodType: .post, serviceName: .forgotPasswordAuthCode ,  parameters: params) { (JSON, error) -> Void in
                 
@@ -157,7 +167,13 @@ extension ForgetPasswordViewController {
                     } else {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "Forget Password", messageToDisplay: "Password Changed Successfully")
+                        let alert = UIAlertController(title: "Forgot Password", message: "Password Changed Successfully" , preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                      
+                                self.dismiss(animated: true)
+                            }))
+                            
+                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }

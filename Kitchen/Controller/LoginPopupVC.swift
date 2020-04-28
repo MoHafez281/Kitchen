@@ -1,6 +1,6 @@
 //
-//  LoginPopup.swift
-//  Kitchen
+//  LoginPopupVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 3/30/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -12,22 +12,26 @@ import Alamofire
 import SwiftyJSON
 import ObjectMapper
 
-class LoginPopup: UIViewController {
+class LoginPopupVC: UIViewController {
     
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    
+    @IBOutlet weak var emailTF: UITextField!
+    @IBOutlet weak var passwordTF: UITextField!
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        RegisterVC.dismissBackButtonRegisterVC = 2 //If user go to RegisterVC from LogiubPoupVC, LogiubPoupVC will appear as presenation style so this var to let back button act as dismiss else act normally
+//      Dismiss LoginPopupVC after user login
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginPopupVC.functionName), name:NSNotification.Name(rawValue: "dismissLoginPopypVC"), object: nil)
     }
     
-    @IBAction func dismissPopup(_ sender: Any) {
+//  Dismiss LoginPopupVC after user login
+    @objc func functionName() {
+        dismissLoginPopupVC(self)
+    }
+    
+    @IBAction func dismissLoginPopupVC(_ sender: Any) {
         dismiss(animated: true)
-    }
-    
-    @IBAction func registerButtonClicked(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToRegister", sender: self)
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
@@ -35,15 +39,14 @@ class LoginPopup: UIViewController {
     }
 }
 
-extension LoginPopup {
+extension LoginPopupVC {
     
     func loginPopup() {
         
-        view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
-            let params  = ["email" : self.emailTextField.text! ,"password" : self.passwordTextField.text! ] as [String: AnyObject]
+            let params  = ["email" : self.emailTF.text! ,"password" : self.passwordTF.text! ] as [String: AnyObject]
             let manager = Manager()
             manager.perform(serviceName: .login, parameters: params) { (JSON, error) -> Void in
                 

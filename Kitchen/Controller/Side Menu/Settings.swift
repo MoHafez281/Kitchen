@@ -1,6 +1,6 @@
 //
 //  Settings.swift
-//  Kitchen
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 4/6/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -14,12 +14,10 @@ class Settings: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//      For dismissing loading view if coming back from view that ladoing data
-        SVProgressHUD.dismiss()
+        AddressesVC.dismissBackButtonAddressesVC = 1 //If user go to AddressesVC from InformationConfirmatioVC, AddressesVC will appear as presenation style so this var to let back button act as dismiss else act normally
     }
     
-    @IBAction func sideBarTapped(_ sender: Any) {
+    @IBAction func sideBarButtonPressed(_ sender: Any) {
         self.sideMenuController?.revealMenu()
     }
 }

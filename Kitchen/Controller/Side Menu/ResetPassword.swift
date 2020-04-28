@@ -1,6 +1,6 @@
 //
 //  ResetPassword.swift
-//  Kitchen
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 4/6/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -10,7 +10,7 @@ import UIKit
 import ObjectMapper
 import SVProgressHUD
 
-class ResetPassword: UIViewController {
+class ResetPasswordVC: UIViewController {
 
     @IBOutlet weak var currtentPasswordTF: UITextField!
     @IBOutlet weak var newPasswordTF: UITextField!
@@ -41,7 +41,7 @@ class ResetPassword: UIViewController {
     }
 }
 
-extension ResetPassword {
+extension ResetPasswordVC {
     
     func resetPassword() {
         

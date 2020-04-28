@@ -1,6 +1,6 @@
 //
 //  RegisterVC.swift
-//  Kitchen
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 7/14/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -22,27 +22,46 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
     @IBOutlet weak var jobTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
     @IBOutlet weak var confirmPasswordTF: UITextField!
-    @IBOutlet weak var locationPicker: UITextField!
-    
+    @IBOutlet weak var locationPickerTF: UITextField!
     
     let location = ["October", "Dokki", "Giza" , "Nasr City" , "Smart Village" , "Zamalek" , "Agouza" , "Maadi"]
     private var datePicker: UIDatePicker?
+    static var dismissBackButtonRegisterVC : Int = 1 //If user go to RegisterVC from LoginPoupVC, LoginPoupVC will appear as presenation style so this var to let back button act as dismiss else act normally
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //      DatePicker View
 //      For setting the maximum year 2015 & minimum 1900
-        var maximumYear: Date {
-           return (Calendar.current as NSCalendar).date(byAdding: .year, value: -5, to: Date(), options: [])!
-        }
-        var minimumYear: Date {
-           return (Calendar.current as NSCalendar).date(byAdding: .year, value: -120, to: Date(), options: [])!
-        }
+//        var maximumYear: Date {
+//           return (Calendar.current as NSCalendar).date(byAdding: .year, value: -5, to: Date(), options: [])!
+//        }
+//        var minimumYear: Date {
+//           return (Calendar.current as NSCalendar).date(byAdding: .year, value: -120, to: Date(), options: [])!
+//        }
+        
+        let calendar = Calendar.current
+        var minDateComponent = calendar.dateComponents([.day,.month,.year], from: Date())
+        minDateComponent.day = 01
+        minDateComponent.month = 01
+        minDateComponent.year = 1900
+
+        let minDate = calendar.date(from: minDateComponent)
+        print(" min date : \(String(describing: minDate))")
+
+        var maxDateComponent = calendar.dateComponents([.day,.month,.year], from: Date())
+        maxDateComponent.day = 31
+        maxDateComponent.month = 12
+        maxDateComponent.year = 2015
+
+        let maxDate = calendar.date(from: maxDateComponent)
+        print("max date : \(String(describing: maxDate))")
 //      DatePicker View
         datePicker = UIDatePicker()
-        datePicker?.maximumDate = maximumYear
-        datePicker?.minimumDate = minimumYear
+        datePicker?.minimumDate = minDate! as Date
+        datePicker?.maximumDate =  maxDate! as Date
+//      datePicker?.maximumDate = maximumYear
+//      datePicker?.minimumDate = minimumYear
         datePicker?.datePickerMode = .date
         datePicker?.addTarget(self, action: #selector(RegisterVC.dateChanged(datePicker:)), for: .valueChanged)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RegisterVC.viewTapped(gestureRecognizer:)))
@@ -51,7 +70,9 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         
         let pickerView = UIPickerView()
         pickerView.delegate = self
-        locationPicker.inputView = pickerView
+        locationPickerTF.inputView = pickerView
+        
+        mobileNumberTF.delegate = self
     }
     
 //  DatePiceker View
@@ -65,10 +86,15 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         birthdayDateTF.text = dateFormatter.string(from: datePicker.date)
     }
 
-    @IBAction func backButtonPressed(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
+        @IBAction func backButtonPressed(_ sender: UIBarButtonItem) {
+            
+            if (self.navigationController!.viewControllers.count > 1) {
+                self.navigationController?.popViewController(animated: true)
+            } else if (RegisterVC.dismissBackButtonRegisterVC == 2) {
+                dismiss(animated: true)
+                //If user go to RegisterVC from LoginPoupVC, LoginPoupVC will appear as presenation style so this var to let back button act as dismiss else act normally
+            }
+        }
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -82,7 +108,7 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.locationPicker.text = self.location[row]
+        self.locationPickerTF.text = self.location[row]
     }
     
     @IBAction func changePlaceHolderColor(_ sender: UITextField) {
@@ -100,16 +126,16 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
         } else if sender.tag == 5 {
             placeholder(textFields: confirmPasswordTF, placeHolderName: "Confirm Password", color: .lightGray)
         } else if sender.tag == 6 {
-            placeholder(textFields: locationPicker, placeHolderName: "Select Your Area", color: .lightGray)
+            placeholder(textFields: locationPickerTF, placeHolderName: "Select Your Area", color: .lightGray)
         }
     }
 
-    @IBAction func registerButtonClicked(_ sender: UIButton) {
+    @IBAction func registerButtonPressed(_ sender: UIButton) {
         
         let providedEmailAddress = emailTF.text
         let isEmailAddressValid = isValidEmailAddress(emailAddressString: providedEmailAddress!)
         
-        if fullNameTF.text == "" || emailTF.text == "" || mobileNumberTF.text == "" || birthdayDateTF.text == "" || passwordTF.text == "" || confirmPasswordTF.text == "" || locationPicker.text == "" {
+        if fullNameTF.text == "" || emailTF.text == "" || mobileNumberTF.text == "" || birthdayDateTF.text == "" || passwordTF.text == "" || confirmPasswordTF.text == "" || locationPickerTF.text == "" {
             
             placeholder(textFields: fullNameTF, placeHolderName: "Full Name", color: .red)
             placeholder(textFields: emailTF, placeHolderName: "Email", color: .red)
@@ -117,7 +143,7 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
             placeholder(textFields: birthdayDateTF, placeHolderName: "Birthday Date", color: .red)
             placeholder(textFields: passwordTF, placeHolderName: "Password", color: .red)
             placeholder(textFields: confirmPasswordTF, placeHolderName: "Confirm Password", color: .red)
-            placeholder(textFields: locationPicker, placeHolderName: "Select Your Area", color: .red)
+            placeholder(textFields: locationPickerTF, placeHolderName: "Select Your Area", color: .red)
             
         } else if (emailTF.text?.count)! > 0  {
             
@@ -125,7 +151,7 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                 
                 if (mobileNumberTF.text?.count)! > 11 || (mobileNumberTF.text?.count)! < 11 {
                     
-                    displayAlertMessage(title: "", messageToDisplay: "Please enter a valid phone number.")
+                    displayAlertMessage(title: "", messageToDisplay: "Please enter a valid mobile number.")
                     
                 } else if (passwordTF.text?.count)! < 8 || (passwordTF.text?.count)! > 12 {
                     
@@ -137,8 +163,8 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                     
                 } else {
                     
-                    if locationPicker.text == "Maadi" {
-                        self.register()
+                    if locationPickerTF.text == "Maadi" {
+                        register()
                         
                     } else {
                         
@@ -157,7 +183,7 @@ class RegisterVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSour
                                 
             } else {
                 
-                displayAlertMessage(title: "", messageToDisplay: "Please enter a valid email.")
+                displayAlertMessage(title: "", messageToDisplay: "Please enter a valid email address.")
             }
         }
     }
@@ -169,6 +195,7 @@ extension RegisterVC {
         
         if textField == mobileNumberTF {
             let allowedCharacters = CharacterSet.decimalDigits //For digits only
+            
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
         }
@@ -200,11 +227,10 @@ extension RegisterVC {
     
     func register() {
         
-        view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
-            let params  = ["name" : self.fullNameTF.text! , "email" : self.emailTF.text! ,"password" : self.passwordTF.text! , "phone" : self.mobileNumberTF.text! , "birthday" : self.birthdayDateTF.text! , "location" : self.locationPicker.text! , "job" : self.jobTF.text!] as [String: AnyObject]
+            let params  = ["name" : self.fullNameTF.text! , "email" : self.emailTF.text! ,"password" : self.passwordTF.text! , "phone" : self.mobileNumberTF.text! , "birthday" : self.birthdayDateTF.text! , "location" : self.locationPickerTF.text! , "job" : self.jobTF.text!] as [String: AnyObject]
             
             let manager = Manager()
             manager.perform(serviceName: .register , parameters: params) { (JSON, error) -> Void in
@@ -235,7 +261,12 @@ extension RegisterVC {
                         let alert = UIAlertController(title: "Register", message: "Registration Done Successfully" , preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                             
-                            self.performSegue(withIdentifier: "goToKitchen", sender: self)
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "dismissLoginPopypVC"), object: nil)
+                            self.dismiss(animated: true) {
+                            
+                                self.performSegue(withIdentifier: "goToKitchen", sender: self)
+                            }
+                            
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }

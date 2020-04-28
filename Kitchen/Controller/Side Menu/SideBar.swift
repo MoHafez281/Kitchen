@@ -1,6 +1,6 @@
 //
 //  SideBar.swift
-//  Kitchen
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 1/12/19.
 //  Copyright © 2019 Mohamed Hafez. All rights reserved.
@@ -26,12 +26,13 @@ class SideBar: UIViewController {
     @IBOutlet weak var profileButton: UIButton!
     @IBOutlet weak var favoritesButton: UIButton!
     @IBOutlet weak var myOrdersButton: UIButton!
+    @IBOutlet weak var myOrdersIconImage: UIImageView!
     @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var settingsIconImage: UIImageView!
     @IBOutlet weak var termsAndConditionsButton: UIButton!
+    @IBOutlet weak var termsAndConditionsIconImage: UIImageView!
     @IBOutlet weak var logOutButton: UIButton!
-    @IBOutlet weak var settingsImage: UIImageView!
-    @IBOutlet weak var termsAndConditionsImage: UIImageView!
-    @IBOutlet weak var logOutImage: UIImageView!
+    @IBOutlet weak var logOutIconImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,15 +45,16 @@ class SideBar: UIViewController {
             
         } else {
             
-            self.profileButton.setTitle("Register", for: .normal)
-            self.favoritesButton.setTitle("Login", for: .normal)
-            self.myOrdersButton.setTitle("Terms & Conditions", for: .normal)
+            self.profileButton.setTitle("Login", for: .normal)
+            self.favoritesButton.setTitle("Terms & Conditions", for: .normal)
+            self.myOrdersButton.isHidden = true
+            self.myOrdersIconImage.isHidden = true
             self.settingsButton.isHidden = true
-            self.settingsImage.isHidden = true
+            self.settingsIconImage.isHidden = true
             self.termsAndConditionsButton.isHidden = true
-            self.termsAndConditionsImage.isHidden = true
+            self.termsAndConditionsIconImage.isHidden = true
             self.logOutButton.isHidden = true
-            self.logOutImage.isHidden = true
+            self.logOutIconImage.isHidden = true
             self.pointsNameLabel.isHidden = true
             self.pointsView.isHidden = true
         }
@@ -82,8 +84,9 @@ class SideBar: UIViewController {
             }
             SideBar.checkVisiableView = 2
         } else {
-            sideMenuController?.hideMenu(animated: true, completion: nil)
-            performSegue(withIdentifier: "goToRegister", sender: self)
+            appDelegate.setRoot(storyBoard: .main, vc: .login)
+            SideBar.checkVisiableView = 1
+            animationWithAppDelegate()
         }
     }
     
@@ -98,25 +101,6 @@ class SideBar: UIViewController {
             }
             SideBar.checkVisiableView = 3
         } else {
-            appDelegate.setRoot(storyBoard: .main, vc: .login)
-            SideBar.checkVisiableView = 1
-            animationWithAppDelegate()
-        }
-    }
-    
-    @IBAction func myOrdersButtonClicked(_ sender: UIButton) {
-        
-        if (User.shared.isRegistered()) {
-            if SideBar.checkVisiableView == 4 {
-                sideMenuController?.hideMenu(animated: true, completion: nil)
-            } else {
-                sideMenuController?.hideMenu(animated: true, completion: nil)
-                performSegue(withIdentifier: "goToMyOrders", sender: self)
-            }
-            SideBar.checkVisiableView = 4
-            
-        } else {
-            
             if SideBar.checkVisiableView == 6 {
                 sideMenuController?.hideMenu(animated: true, completion: nil)
             } else {
@@ -125,6 +109,17 @@ class SideBar: UIViewController {
             }
             SideBar.checkVisiableView = 6
         }
+    }
+    
+    @IBAction func myOrdersButtonClicked(_ sender: UIButton) {
+        
+        if SideBar.checkVisiableView == 4 {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
+        } else {
+            sideMenuController?.hideMenu(animated: true, completion: nil)
+            performSegue(withIdentifier: "goToMyOrders", sender: self)
+        }
+        SideBar.checkVisiableView = 4
     }
     
     @IBAction func settingsButtonClicked(_ sender: UIButton) {
@@ -180,7 +175,7 @@ class SideBar: UIViewController {
                 
                 if (error != nil) {
                     
-                    self.dismissSVProgress()
+                    //error
                     
                 } else {
                     
@@ -228,8 +223,8 @@ class SideBar: UIViewController {
             manager.perform(serviceName: .getUserPoints, parameters: params) { (JSON, error) -> Void in
                 
                 if (error != nil) {
-                    
-                    self.dismissSVProgress()
+                     
+                    //error
                     
                 } else {
                         

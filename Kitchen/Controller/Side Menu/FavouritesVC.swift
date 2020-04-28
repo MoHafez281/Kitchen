@@ -25,21 +25,23 @@ class FavouritesVC: UIViewController , UITableViewDelegate , UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Reload the view after checking the network connectivity and it is working
+//      Reload the view after checking the network connectivity and it is working
         NotificationCenter.default.addObserver(self, selector: #selector(FavouritesVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
 
         tableView.delegate = self
         tableView.dataSource = self
         
+        AddToCartPopupVC.favButtonIsDiable = 2 //To check if user on FavouritesVC so favorite buton will be hidden, else if user on HomeMenuVC favorite button will be appear
+                
         getFav(userId: User.shared.id!)
     }
     
-    //Reload the view after checking the network connectivity and it is working
+//  Reload the view after checking the network connectivity and it is working
     @objc func functionName() {
         getFav(userId: User.shared.id!)
     }
 
-    @IBAction func sideBarTapped(_ sender: Any) {
+    @IBAction func sideBarButtonPressed(_ sender: Any) {
         self.sideMenuController?.revealMenu()
     }
     
@@ -52,7 +54,7 @@ class FavouritesVC: UIViewController , UITableViewDelegate , UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FavouritesCell
         let dishes = menuList[indexPath.row]
         cell.favouritesNameLabel.text! = dishes.name
-        cell.favouritesPriceLabel.text! = "\(dishes.price)LE"
+        cell.favouritesPriceLabel.text! = "\(dishes.price) EGP"
         
         if (dishes.image != "") {
             
@@ -83,6 +85,7 @@ class FavouritesVC: UIViewController , UITableViewDelegate , UITableViewDataSour
             tableView.reloadData()
         }
     }
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -97,20 +100,6 @@ class FavouritesVC: UIViewController , UITableViewDelegate , UITableViewDataSour
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
-        }
-    }
-//  For making Tableview reload with animation
-    func animateRows() {
-        let cells = tableView.visibleCells
-        for cell in cells {
-            cell.transform = CGAffineTransform(translationX: 0, y: tableView.frame.height)
-        }
-        var delay = 0.0
-        for cell in cells {
-            UIView.animate(withDuration: 1, delay: delay, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
-                cell.transform = .identity
-            })
-            delay += 0.05
         }
     }
 }
@@ -134,13 +123,13 @@ extension FavouritesVC {
                 } else {
                     
                     let jsonDict = JSON as? NSDictionary
-                    let menusResponse = jsonDict!["error"]
-                    let menusMessage = jsonDict!["error_msg"]
+                    let favouritesResponse = jsonDict!["error"]
+                    let favouritesMessage = jsonDict!["error_msg"]
                     
-                    if (menusResponse as? Int == 1) {
+                    if (favouritesResponse as? Int == 1) {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "", messageToDisplay: menusMessage as! String)
+                        self.displayAlertMessage(title: "", messageToDisplay: favouritesMessage as! String)
                         
                     } else {
                         
@@ -148,7 +137,6 @@ extension FavouritesVC {
                         let menus = jsonDict!["dishes"]
                         self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
                         self.tableView.reloadData()
-                        self.animateRows()
                     }
                 }
             }
@@ -172,13 +160,13 @@ extension FavouritesVC {
                 } else {
                     
                     let jsonDict = JSON as? NSDictionary
-                    let jsonError = jsonDict!["error"] as! Bool
-                    let jsonMessage = jsonDict!["message"] as! String
+                    let removeFavouritesError = jsonDict!["error"] as! Bool
+                    let removeFavouritesMessage = jsonDict!["message"] as! String
                     
-                    if (jsonError) {
+                    if (removeFavouritesError) {
                         
                         self.dismissSVProgress()
-                        self.displayAlertMessage(title: "", messageToDisplay: "\(jsonMessage)")
+                        self.displayAlertMessage(title: "", messageToDisplay: "\(removeFavouritesMessage)")
                         
                     } else {
                         

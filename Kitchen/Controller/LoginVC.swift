@@ -1,6 +1,6 @@
 //
-//  ViewController.swift
-//  Kitchen
+//  LoginVC.swift
+//  Kershoman
 //
 //  Created by Mohamed Hafez on 12/26/18.
 //  Copyright © 2018 Mohamed Hafez. All rights reserved.
@@ -12,11 +12,11 @@ import Alamofire
 import SwiftyJSON
 import ObjectMapper
 
-class ViewController: UIViewController , UITextFieldDelegate {
+class LoginVC: UIViewController , UITextFieldDelegate {
     
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var emailTF: UITextField!
+    @IBOutlet weak var passwordTF: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,28 +24,23 @@ class ViewController: UIViewController , UITextFieldDelegate {
         self.loginButton.layer.cornerRadius = self.view.frame.height * 0.082 * 0.5
     }
     
-    @IBAction func registeButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToRegister", sender: self)
-    }
-    
-    @IBAction func skipButtonClicked(_ sender: UIButton) {
+    @IBAction func skipButtonPressed(_ sender: UIButton) {
         performSegue(withIdentifier: "goToKitchen", sender: self)
     }
     
-    @IBAction func loginPressed(_ sender: Any) {
+    @IBAction func loginButtonPressed(_ sender: Any) {
         login()
     }
 }
 
-extension ViewController {
+extension LoginVC {
     
     func login() {
         
-        view.isUserInteractionEnabled = false
-        SVProgressHUD.show()
+        showSVProgress()
         DispatchQueue.main.async {
             
-            let params  = ["email" : self.emailTextField.text! ,"password" : self.passwordTextField.text! ] as [String: AnyObject]
+            let params  = ["email" : self.emailTF.text! ,"password" : self.passwordTF.text! ] as [String: AnyObject]
             let manager = Manager()
             manager.perform(serviceName: .login, parameters: params) { (JSON, error) -> Void in
                 
