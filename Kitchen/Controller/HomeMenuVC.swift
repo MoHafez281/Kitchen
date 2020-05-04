@@ -31,6 +31,7 @@ class HomeMenuVC: UIViewController , UICollectionViewDelegate , UICollectionView
     let location = ["", "October", "Dokki", "Giza" , "Nasr City" , "Smart Village" , "Zamalek" , "Agouza" , "Maadi"]
     var categoryList = [Category]()
     var selectedCategory : Category?
+    static var dismissSVProgrssBar : Int = 1 //To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories SVProgressHUD will appear
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +39,8 @@ class HomeMenuVC: UIViewController , UICollectionViewDelegate , UICollectionView
         AddToCartPopupVC.favButtonIsDiable = 1 //To check if user on FavouritesVC so favorite buton will be hidden, else if user on HomeMenuVC favorite button will be appear
 
         dropDownMenuIcon.isHidden = true
+        
+        HomeMenuVC.dismissSVProgrssBar = 1 //To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories SVProgressHUD will appear
         
 //      Reload the view after checking the network connectivity and it is working
         NotificationCenter.default.addObserver(self, selector: #selector(HomeMenuVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
@@ -183,9 +186,9 @@ class HomeMenuVC: UIViewController , UICollectionViewDelegate , UICollectionView
                     } else {
                         self.cartButton.image = #imageLiteral(resourceName: "cart")
                     }
+                    HomeMenuVC.dismissSVProgrssBar = 2 //To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories SVProgressHUD will appear
                     self.navigationController?.setNavigationBarHidden(false, animated: false)
-//                   To refersh the Menu after add to cart, as reload data again if user down in the view that will get it up again
-                    //self.getMenu()
+                    self.getMenu() //To refersh the Menu after add to cart, as reload data again if user down in the view that will get it up again
                 }
             }
         }
@@ -212,6 +215,7 @@ extension HomeMenuVC : UIPickerViewDelegate , UIPickerViewDataSource {
         if selectedLocation == "Maadi" {
 //          Maadi selected
         } else {
+            
             let alert = UIAlertController(title: "", message: "Available in Maadi Only, Coming Soon" , preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(okAction)
@@ -227,7 +231,14 @@ extension HomeMenuVC {
     
     func getMenu() {
         
-        showSVProgress()
+//      To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories            SVProgressHUD will appear
+        
+        if HomeMenuVC.dismissSVProgrssBar == 1 {
+            showSVProgress()
+        } else if HomeMenuVC.dismissSVProgrssBar == 2 {
+//          not showSVProgress()
+        }
+        
         DispatchQueue.main.async {
             
             let params  = ["category" : self.selectedCategory!.id ,"location" : self.selectedLocation ?? "Maadi"] as [String: AnyObject]
@@ -251,19 +262,26 @@ extension HomeMenuVC {
                         self.displayAlertMessage(title: "Error", messageToDisplay: menusMessage as! String)
                         
                     } else {
-                        
-                        self.dismissSVProgress()
-                        let menus = jsonDict!["dishes"]
-                        self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
-//                      For making collectionview reload with animation
-                        self.menuCV.performBatchUpdates (
-                          {
-                            self.menuCV.reloadSections(NSIndexSet(index: 0) as IndexSet)
-                          }, completion: { (finished:Bool) -> Void in
-                        })
-                        self.menuCV.reloadData()
-                        if (self.menuList.count > 0) {
-                            self.menuCV.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+//                      To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between                       categories SVProgressHUD will appear
+                        if HomeMenuVC.dismissSVProgrssBar == 1 {
+         
+                            self.dismissSVProgress()
+                            let menus = jsonDict!["dishes"]
+                            self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
+//                          For making collectionview reload with animation
+                            self.menuCV.performBatchUpdates ( {
+                                self.menuCV.reloadSections(NSIndexSet(index: 0) as IndexSet) }, completion: { (finished:Bool) -> Void in })
+                            self.menuCV.reloadData()
+                            if (self.menuList.count > 0) {
+                                self.menuCV.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+                            }
+                            
+                        } else if HomeMenuVC.dismissSVProgrssBar == 2 {
+//                          not showSVProgress()
+                            let menus = jsonDict!["dishes"]
+                            self.menuList = Mapper<Menu>().mapArray(JSONObject: menus)!
+                            self.menuCV.reloadData()
+                            HomeMenuVC.dismissSVProgrssBar = 1
                         }
                     }
                 }

@@ -141,10 +141,9 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
 //            UIApplication.shared.statusBarStyle = .default
 //        }
     }
-    @IBAction func test(_ sender: UIButton) {
+    @IBAction func backButtonPressed(_ sender: UIButton) {
 
-        appDelegate.setRoot(storyBoard: .main, vc: .home)
-        animationWithAppDelegate()
+        performSegue(withIdentifier: "goBackToKitchen", sender: self)
     }
     
     @IBAction func removeIteamsButtonPressed(_ sender: UIButton) {
@@ -157,6 +156,7 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
             
             let alert = UIAlertController(title: "Warning", message: "Do you really want to empty your cart?" , preferredStyle: .alert)
             let okAction = UIAlertAction(title: "Yes", style: .default) { (alert) in
+                
                 User.shared.cart.removeAll()
                 User.shared.saveData()
                 self.tableView.reloadData()
@@ -174,16 +174,22 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
         if (User.shared.isRegistered()) {
             
             if User.shared.cart.count == 0 {
+                
                 displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
+                
             } else {
+                
                 self.performSegue(withIdentifier: "goToConfirmPopup", sender: self)
             }
             
         } else {
             
             if User.shared.cart.count == 0 {
+                
                 displayAlertMessage(title: "", messageToDisplay: "Cart is empty!")
+                
             } else {
+                
                 self.performSegue(withIdentifier: "goToLoginPopup", sender: self)
             }
         }
@@ -258,7 +264,6 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
         } else if (menuItem.size == 0 && menuItem.selectedOption1 != "") {
             
             cell.sizeLabel.text = "Large" + ", \(menuItem.selectedOption1)"
-            
         }
 
         cell.nameLabel.text = menuItem.name

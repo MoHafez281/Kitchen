@@ -112,6 +112,7 @@ class AddToCartPopupVC: UIViewController {
             }
             
             if (allMenuPopup!.size == 1) {
+                
                 largeButton.isSelected = true
                 allMenuPopup!.selectedSize = "Large"
                 User.shared.saveData()
@@ -185,19 +186,26 @@ class AddToCartPopupVC: UIViewController {
             if (options1TF!.text == "" || options2TF!.text == "") {
                 
                 if (AddToCartPopupVC.pastaChosen == 2) {
+                    
                     options2TF!.text = ""
                     savedSelectedItems()
+                    
                 } else {
+                    
                     displayAlertMessage(title: "", messageToDisplay: "You have to choose your sides!")
                 }
                 
             } else {
+                
                 savedSelectedItems()
             }
+            
         } else if (allMenuPopup!.side1 != "") {
             
             if (options1TF!.text == "" && (options2View == nil)) {
+                
                 displayAlertMessage(title: "", messageToDisplay: "You have to choose your sides!")
+                
             } else {
                 savedSelectedItems()
             }

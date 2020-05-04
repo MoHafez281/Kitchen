@@ -117,9 +117,7 @@ extension AddressesVC {
                         self.dismissSVProgress()
                         if (AddressesVC.addressAlartMessageAlreadyShowed == 1) {
                             
-                            self.displayAlertMessage(title: "Error", messageToDisplay: getAdressesMessage as! String)
-                        } else {
-                            //AlertMessage will not appear
+                           //AlertMessage will not appear
                         }
                         
                     } else {

@@ -260,13 +260,12 @@ extension RegisterVC {
                         User.shared.saveData()
                         let alert = UIAlertController(title: "Register", message: "Registration Done Successfully" , preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                            
+//                          Dismiss LoginPopupVC after user login
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "dismissLoginPopypVC"), object: nil)
                             self.dismiss(animated: true) {
                             
                                 self.performSegue(withIdentifier: "goToKitchen", sender: self)
                             }
-                            
                         }))
                         self.present(alert, animated: true, completion: nil)
                     }

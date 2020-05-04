@@ -16,13 +16,13 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
     @IBAction func addTempMobile(_ sender: UISwitch) {
         
         if sender.isOn == true {
-            mobileNumberTextFiled.text = ""
-            mobileNumberTextFiled.isEnabled = true
-            textSwitch = mobileNumberTextFiled.text!
+            mobileNumberTF.text = ""
+            mobileNumberTF.isEnabled = true
+            textSwitch = mobileNumberTF.text!
         } else {
             textSwitch = ""
-            mobileNumberTextFiled.isEnabled = false
-            mobileNumberTextFiled.text = User.shared.phone
+            mobileNumberTF.isEnabled = false
+            mobileNumberTF.text = User.shared.phone
             textSwitch = User.shared.phone!
         }
     }
@@ -30,8 +30,8 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
     @IBOutlet weak var scheduleView: UIView!
     @IBOutlet weak var dateTF: UITextField!
     @IBOutlet weak var timeTF: UITextField!
-    @IBOutlet weak var addressTextField: UITextField!
-    @IBOutlet weak var mobileNumberTextFiled: UITextField!
+    @IBOutlet weak var selectAddressTF: UITextField!
+    @IBOutlet weak var mobileNumberTF: UITextField!
     @IBOutlet weak var nowRadioButton: DLRadioButton!
     @IBOutlet weak var laterRadioButton: DLRadioButton!
     
@@ -53,11 +53,10 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
         
         AddressesVC.dismissBackButtonAddressesVC = 2 //If user go to AddressesVC from InformationConfirmatioVC, AddressesVC will appear as presenation style so this var to let back button act as dismiss else act normally
         
-        mobileNumberTextFiled.delegate = self
-        
         addTempMobileOutlet.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         addTempMobileOutlet.isOn = false
-        mobileNumberTextFiled.isEnabled = false
+        mobileNumberTF.isEnabled = false
+        mobileNumberTF.delegate = self
         
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: Date())
@@ -77,7 +76,7 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
 //          time picker for later max order time is 20 **
             let max = dateFormatter.date(from: "20:00")
             
-            if(hour <= 18) {
+            if (hour <= 18) {
 //              the user is selecting time while his local time is less than 6:00 PM
                 timePicker.minimumDate = calendar.date(byAdding: .minute, value: 90, to: Date())
             } else {
@@ -107,7 +106,7 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
             timePicker.maximumDate = max!
             timePicker.date = min!
             
-            if(hour >= 20) {
+            if (hour >= 20) {
 //              he is making order aftre the working hours
                 let date = calendar.date(byAdding: .day, value: 1, to: Date())
                 datePicker.minimumDate = date
@@ -121,14 +120,14 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
         getAddresses()
         dateTF.inputView = datePicker
         timeTF.inputView = timePicker
-        mobileNumberTextFiled.text! = User.shared.phone!
-        addressTextField.inputView = addressPickerView
+        mobileNumberTF.text! = User.shared.phone!
+        selectAddressTF.inputView = addressPickerView
         addressPickerView.delegate = self
         datePicker.datePickerMode = .date
     }
     
-//   Reload the view after checking the network connectivity and it is working
-//   Reload addressPickerView after a new address added or edited
+//  Reload the view after checking the network connectivity and it is working
+//  Reload addressPickerView after a new address added or edited
     @objc func functionName() {
         getAddresses()
     }
@@ -155,25 +154,26 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
     }
     
     @IBAction func confirmAddressPressed(_ sender: UIButton) {
-        // check for all the required parameters
+//      check for all the required parameters
         
         if selectedAdress?.area == "Maadi" {
             
-            if mobileNumberTextFiled.text == "" {
+            if mobileNumberTF.text == "" {
             
-                displayAlertMessage(title: "", messageToDisplay: "Please, enter a temp mobile number")
-                placeholder(textFields: mobileNumberTextFiled, placeHolderName: "Mobile Number", color: .red)
+                displayAlertMessage(title: "", messageToDisplay: "Please, enter a temp mobile number.")
+                placeholder(textFields: mobileNumberTF, placeHolderName: "Mobile Number", color: .red)
                 
-            } else if (mobileNumberTextFiled.text?.count)! > 11 || (mobileNumberTextFiled.text?.count)! < 11 {
-                displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number")
+            } else if (mobileNumberTF.text?.count)! > 11 || (mobileNumberTF.text?.count)! < 11 {
+                
+                displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number.")
                 
             } else if (laterRadioButton.isSelected) {
                 
                 if dateTF.text == "" || timeTF.text == "" {
                     
-                    displayAlertMessage(title: "", messageToDisplay: "Please, Fill the date & the time")
-                    placeholder(textFields: dateTF, placeHolderName: "Select the date", color: .red)
-                    placeholder(textFields: timeTF, placeHolderName: "Select the time", color: .red)
+                    displayAlertMessage(title: "", messageToDisplay: "Please, Fill the date & the time.")
+                    placeholder(textFields: dateTF, placeHolderName: "Select the date.", color: .red)
+                    placeholder(textFields: timeTF, placeHolderName: "Select the time.", color: .red)
                     
                 } else {
                     performSegue(withIdentifier: "goToSummary", sender: self)
@@ -184,16 +184,18 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
             }
             
         } else {
-            displayAlertMessage(title: "", messageToDisplay: "Select or add address within the area, Available in Maadi Only")
-            addressTextField.text = ""
+            
+            displayAlertMessage(title: "", messageToDisplay: "Please select or add address within the area, Available in Maadi Only.")
+//            placeholder(textFields: self.selectAddressTF, placeHolderName: "Select or add address within the area.", color: .red)
+            selectAddressTF.text = ""
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if(segue.identifier == "goToSummary") {
+        if (segue.identifier == "goToSummary") {
             
-            textSwitch = mobileNumberTextFiled.text!
+            textSwitch = mobileNumberTF.text!
             let vc = segue.destination as! SummaryVC
             vc.addressId = selectedAdress!.id
             vc.detailedaddressConfirmAddress = (selectedAdress?.fullAddress)! + ", " + (selectedAdress?.street)! + ", " + (selectedAdress?.landmark)! + ", " + (selectedAdress?.area)! + ", " + (selectedAdress?.buldingNumber)! + ", " + (selectedAdress?.floor)! + ", " + (selectedAdress?.aparmentNumber)!
@@ -232,7 +234,7 @@ extension InformationConfirmationVC: UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        addressTextField.text = addressList[row].addressName
+        selectAddressTF.text = addressList[row].addressName
         selectedAdress = addressList[row]
     }    
 }
@@ -247,10 +249,10 @@ extension InformationConfirmationVC {
             let manager = Manager()
             manager.perform(serviceName: .getAddress, parameters: params) { (JSON, error) -> Void in
                 
-                if(error != nil){
+                if (error != nil) {
                     
                     self.noInternetConnection()
-                    self.addressTextField.isEnabled = false //If no connection or no address added must be disabled else app will crash
+                    self.selectAddressTF.isEnabled = false //If no connection or no address added must be disabled else app will crash
                     
                 } else {
                     
@@ -261,21 +263,21 @@ extension InformationConfirmationVC {
                     if (getAddressResponse as? Int == 1) {
                         
                         AddressesVC.addressAlartMessageAlreadyShowed = 2 //If no address message appear not appear it again while user add an address
-                        self.addressTextField.isEnabled = false //If no connection or no address added must be disabled else app will crash
+                        self.selectAddressTF.isEnabled = false //If no connection or no address added must be disabled else app will crash
                         self.displayAlertMessage(title: "Error", messageToDisplay: getAddressMessage as! String)
-                        self.placeholder(textFields: self.addressTextField, placeHolderName: "No address added, please add one.", color: .red)
+                        self.placeholder(textFields: self.selectAddressTF, placeHolderName: "No address added, please add one.", color: .red)
                         
                     } else {
                         
+                        self.placeholder(textFields: self.selectAddressTF, placeHolderName: "Address", color: .lightGray)
                         let address = jsonDict!["addresses"]
-                        self.addressTextField.isEnabled = true 
-                        self.placeholder(textFields: self.addressTextField, placeHolderName: "Address", color: .lightGray)
+                        self.selectAddressTF.isEnabled = true
                         self.addressList = Mapper<AdressModel>().mapArray(JSONObject: address)!
                         
                         if (self.addressList.count > 0) {
                             
                             self.selectedAdress = self.addressList[0]
-                            self.addressTextField.text = self.addressList[0].addressName
+                            self.selectAddressTF.text = self.addressList[0].addressName
                         }
                     }
                 }
@@ -284,7 +286,7 @@ extension InformationConfirmationVC {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == mobileNumberTextFiled  {
+        if textField == mobileNumberTF  {
             let allowedCharacters = CharacterSet.decimalDigits //for digits only
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacters.isSuperset(of: characterSet)
