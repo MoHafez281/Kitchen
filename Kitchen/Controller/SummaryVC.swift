@@ -39,7 +39,7 @@ class SummaryVC: UIViewController , UITableViewDataSource , UITableViewDelegate 
     @IBOutlet weak var tableView: UITableView!
     
     var isMyOrders = false
-    var total : Int = 0
+    var total : Double = 0
     var orderTime : String = ""
     var craetionTime : String = ""
     var addressId : Int = -1
@@ -47,8 +47,8 @@ class SummaryVC: UIViewController , UITableViewDataSource , UITableViewDelegate 
     var detailedaddressConfirmAddress : String = ""
     var phoneNumber = ""
     var subtotal = 0
-    var delivery = 5
-    var discount = 0
+    var deliveryFees = 15
+    var discount : Double = 0
     var dishList = [[String:Any]]()
     var schedule : Bool = false
     var location : String = ""
@@ -130,9 +130,12 @@ class SummaryVC: UIViewController , UITableViewDataSource , UITableViewDelegate 
                 subtotal = subtotal + (Int(mentItem.price)! * mentItem.qty)
             }
             
-            deliveryFeeLabel.text = "\(5) EGP"
+            total = Double (subtotal) * discount/100
+            
+            deliveryFeeLabel.text = "\(15) EGP"
+            pointsDiscountLabel.text = "\(discount)%"
             subtotalLabel.text = "\(subtotal) EGP"
-            proceedLabel.text = "TOTAL \(subtotal + delivery - discount) EGP"
+            proceedLabel.text = "Total \(String((Double(subtotal) - total) + Double(deliveryFees)))"
             deliveryTimeLabel.text = orderTime
             mobileNumberLabel.text = phoneNumber
             addressLabel.text = detailedaddressConfirmAddress
@@ -237,7 +240,7 @@ extension SummaryVC {
                 
                 i = i + 1
             }
-            
+//            
             let params  = ["order_time": self.orderTime,
                            "creation_time": self.craetionTime,
                            "user_id": User.shared.id!,
@@ -245,9 +248,9 @@ extension SummaryVC {
                            "address_id": self.addressId,
                            "phone": self.phoneNumber,
                            "subtotal": self.subtotal,
-                           "delivery": self.delivery,
+                           "delivery": self.deliveryFees,
                            "discount": self.discount,
-                           "total": self.subtotal + self.delivery - self.discount,
+                           "total": self.subtotal + self.deliveryFees - Int(self.discount),
                            "dishes": dishes,
                            "quantities": qties,
                            "options" : "asd",
@@ -276,7 +279,7 @@ extension SummaryVC {
                         if(loginResponse){
                             
                             self.dismissSVProgress()
-                            self.displayAlertMessage(title: "Error", messageToDisplay: "Connection Error")
+//                            self.displayAlertMessage(title: "Error", messageToDisplay: "Connection Error")
                             
                         } else {
                             

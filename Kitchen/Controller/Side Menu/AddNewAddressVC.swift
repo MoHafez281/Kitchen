@@ -14,7 +14,6 @@ import CoreLocation
 
 class AddNewAddressVC: UIViewController , UIPickerViewDelegate , UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate {
     
-    @IBOutlet weak var textfields: UITextField!
     @IBOutlet weak var areaPickerTF: UITextField!
     @IBOutlet weak var addressNameTF: UITextField!
     @IBOutlet weak var streerTF: UITextField!
@@ -53,17 +52,6 @@ class AddNewAddressVC: UIViewController , UIPickerViewDelegate , UIPickerViewDat
         }
         
         self.floorNoTF.delegate = self
-    }
-    
-    //Write the digits only method here:
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == floorNoTF {
-            let allowedCharacters = CharacterSet.decimalDigits //for digits only
-            let characterSet = CharacterSet(charactersIn: string)
-            return allowedCharacters.isSuperset(of: characterSet)
-        }
-        
-        return false
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

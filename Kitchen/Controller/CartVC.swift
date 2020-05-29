@@ -19,6 +19,7 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
     @IBOutlet weak var subTotalPriceLabel: UILabel!
     @IBOutlet weak var proceedButton: UIButton!
     @IBOutlet weak var discountLabel: UILabel!
+    @IBOutlet weak var deliverFeesLabel: UILabel!
     @IBOutlet weak var promoCodeButton: DLRadioButton!
     @IBOutlet weak var pointsButton: DLRadioButton!
     @IBOutlet weak var promoCodeTF: UITextField!
@@ -31,6 +32,7 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
     var dishList = [[String:Any]]()
     var etaArray = [String]()
     var subTotal : Int = 0
+    var deliverFees : Int = 15
     var discount : Double = 0
     var total : Double = 0
 
@@ -119,13 +121,19 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
             subTotal = subTotal + (Int(mentItem.price)! * mentItem.qty)
             etaArray.append(mentItem.eta)
         }
-        subTotalPriceLabel.text = "\(subTotal)"
-        totalPriceLabel.text = "\(subTotal)"
+        if User.shared.cart.count == 0 {
+            deliverFees = 0
+            deliverFeesLabel.text = "\(deliverFees) EGP"
+            
+        } else {
+            deliverFeesLabel.text = "\(deliverFees) EGP"
+        }
+        subTotalPriceLabel.text = "\(subTotal) EGP"
+        totalPriceLabel.text = "\(subTotal + deliverFees) EGP"
         discountLabel.text = "\(0)"
-        var maxEtaValue = etaArray.max()
-        etaLabell.text = maxEtaValue
+        etaLabell.text = etaArray.max()
     }
-
+    
 //  Reload the view after checking the network connectivity and it is working
     @objc func functionName() {
         checkPromoCode()
@@ -231,7 +239,10 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
                 dishList.append(["id" : item.id,
                                  "quantity": item.qty])
             }
+            var etaMax = Int(etaArray.max()!)
             vc.dishList = dishList
+            vc.eta = etaMax!
+            vc.discount = discount
         }
     }
     
@@ -326,6 +337,7 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
     func updateTotal() {
         
         subTotal = 0
+        discount = 0
         etaArray = ["0"]
         
         for mentItem in User.shared.cart {
@@ -353,10 +365,16 @@ class CartVC: UIViewController , UITableViewDelegate , UITableViewDataSource {
             
         } else {
             
-            subTotalPriceLabel.text = "\(subTotal)"
-            totalPriceLabel.text = "\(subTotal)"
-            var maxEtaValue = etaArray.max()
-            etaLabell.text = maxEtaValue
+            if User.shared.cart.count == 0 {
+                deliverFees = 0
+                deliverFeesLabel.text = "\(deliverFees) EGP"
+                
+            } else {
+                deliverFeesLabel.text = "\(deliverFees) EGP"
+            }
+            subTotalPriceLabel.text = "\(subTotal) EGP"
+            totalPriceLabel.text = "\(subTotal + deliverFees) EGP"
+            etaLabell.text = etaArray.max()
         }
     }
     
@@ -387,22 +405,23 @@ extension CartVC {
                     
                     if (promoCodeResponse as? Int == 1) {
                         
+                        self.discount = 0
+                        
                         if self.promoCodeTF.text?.count == 0 {
                             
                             self.notPromoCodeImage.isHidden = true
                             self.promoCodeImage.isHidden = true
-                            self.subTotalPriceLabel.text = "\(self.subTotal)"
-                            self.totalPriceLabel.text = "\(self.subTotal)"
-                            self.discountLabel.text = "\(0)"
                             
                         } else {
                             
                         self.notPromoCodeImage.isHidden = false
                         self.promoCodeImage.isHidden = true
-                        self.subTotalPriceLabel.text = "\(self.subTotal)"
-                        self.totalPriceLabel.text = "\(self.subTotal)"
-                        self.discountLabel.text = "\(0)"
+
                         }
+                        
+                        self.subTotalPriceLabel.text = "\(self.subTotal) EGP"
+                        self.totalPriceLabel.text = "\(self.subTotal + self.deliverFees) EGP"
+                        self.discountLabel.text = "\(0)"
                         
                     } else {
                         
@@ -410,9 +429,9 @@ extension CartVC {
                         self.notPromoCodeImage.isHidden = true
                         self.discount = promoCodeDisocunt as! Double
                         self.discountLabel.text = String ("\(self.discount)%")
-                        self.subTotalPriceLabel.text = "\(self.subTotal)"
+                        self.subTotalPriceLabel.text = "\(self.subTotal) EGP"
                         self.total = Double (self.subTotal) * self.discount/100
-                        self.totalPriceLabel.text = String(Double(self.subTotal) - self.total)
+                        self.totalPriceLabel.text = "\(String( (Double(self.subTotal) - self.total) + Double(self.deliverFees) )) EGP"
                     }
                 }
             }

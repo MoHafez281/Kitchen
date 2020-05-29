@@ -19,11 +19,13 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
             mobileNumberTF.text = ""
             mobileNumberTF.isEnabled = true
             textSwitch = mobileNumberTF.text!
+            InformationConfirmationVC.checkTemoMobileNumberSelected = 2
         } else {
             textSwitch = ""
             mobileNumberTF.isEnabled = false
             mobileNumberTF.text = User.shared.phone
             textSwitch = User.shared.phone!
+            InformationConfirmationVC.checkTemoMobileNumberSelected = 1
         }
     }
     
@@ -41,10 +43,18 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
     var selectedAdress : AdressModel?
     var timePicker = UIDatePicker()
     var datePicker = UIDatePicker()
+    var eta : Int = 0
+    var discount : Double = 0
+    
     var textSwitch : String = ""
+    static var checkTemoMobileNumberSelected : Int = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        InformationConfirmationVC.checkTemoMobileNumberSelected = 1
         
 //      Reload the view after checking the network connectivity and it is working
         NotificationCenter.default.addObserver(self, selector: #selector(InformationConfirmationVC.functionName), name:NSNotification.Name(rawValue: "NotificationID"), object: nil)
@@ -154,8 +164,7 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
     }
     
     @IBAction func confirmAddressPressed(_ sender: UIButton) {
-//      check for all the required parameters
-        
+
         if selectedAdress?.area == "Maadi" {
             
             if mobileNumberTF.text == "" {
@@ -163,9 +172,32 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
                 displayAlertMessage(title: "", messageToDisplay: "Please, enter a temp mobile number.")
                 placeholder(textFields: mobileNumberTF, placeHolderName: "Mobile Number", color: .red)
                 
+                
             } else if (mobileNumberTF.text?.count)! > 11 || (mobileNumberTF.text?.count)! < 11 {
                 
                 displayAlertMessage(title: "", messageToDisplay: "Please, enter a correct mobile number.")
+                
+            } else if InformationConfirmationVC.checkTemoMobileNumberSelected == 2 {
+                
+                if (mobileNumberTF.text == User.shared.phone) {
+                    
+                    displayAlertMessage(title: "", messageToDisplay: "You entered the registered mobile number, Please enter a temp mobile number.")
+                    
+                } else {
+                    
+                    if (laterRadioButton.isSelected) {
+                        if dateTF.text == "" || timeTF.text == "" {
+                            displayAlertMessage(title: "", messageToDisplay: "Please, Fill the date & the time.")
+                            placeholder(textFields: dateTF, placeHolderName: "Select the date.", color: .red)
+                            placeholder(textFields: timeTF, placeHolderName: "Select the time.", color: .red)
+                        } else {
+                            performSegue(withIdentifier: "goToSummary", sender: self)
+                        }
+                        
+                    } else if (nowRadioButton.isSelected) {
+                        performSegue(withIdentifier: "goToSummary", sender: self)
+                    }
+                }
                 
             } else if (laterRadioButton.isSelected) {
                 
@@ -186,7 +218,6 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
         } else {
             
             displayAlertMessage(title: "", messageToDisplay: "Please select or add address within the area, Available in Maadi Only.")
-//            placeholder(textFields: self.selectAddressTF, placeHolderName: "Select or add address within the area.", color: .red)
             selectAddressTF.text = ""
         }
     }
@@ -203,7 +234,8 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
             if (nowRadioButton.isSelected) {
                 
                 vc.craetionTime = formatDateToSend(date: Date()) + " " + formatTime(date: Date())
-                vc.orderTime = formatDateToSend(date: Date()) + " " + formatTime(date: Calendar.current.date(byAdding: .minute, value: 90, to: Date())!)
+//                vc.orderTime = "\(eta + 30) Minutes"
+                                vc.orderTime = formatDateToSend(date: Date()) + " " + formatTime(date: Calendar.current.date(byAdding: .minute, value: 90, to: Date())!)
                 
             } else {
                 
@@ -215,6 +247,7 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
             vc.schedule = laterRadioButton.isSelected
             vc.phoneNumber = textSwitch
             vc.location = (selectedAdress?.area)!
+            vc.discount = discount
         }
     }
 }

@@ -46,13 +46,13 @@ class MyOrders: UIViewController , UITableViewDelegate , UITableViewDataSource {
             vc.isMyOrders = true
             if let order = sender as? Orders {
                 vc.myOrder = order
-                vc.total = order.total
+//                vc.total = order.total
                 vc.orderTime = order.orderTime
                 vc.detailedaddress = (order.address!.fullAddress) + ", " + (order.address!.street) + ", " + (order.address!.landmark) + ", " + (order.address!.area) + ", " + (order.address!.buldingNumber) + ", " + (order.address!.floor) + ", " + (order.address!.aparmentNumber)
                 vc.phoneNumber = order.phone
                 vc.subtotal = order.subtotal
-                vc.delivery = order.delivery
-                vc.discount = order.discount
+                vc.deliveryFees = order.delivery
+                vc.discount = Double(order.discount)
             }
         }
     }

@@ -627,13 +627,6 @@
                                 <color key="textColor" white="0.35999999999999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="000000 EGP" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oI0-sN-PPc">
-                                <rect key="frame" x="301.5" y="655" width="78" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" white="0.35999999999999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Total:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KNy-XU-4uE">
                                 <rect key="frame" x="217" y="684" width="41.5" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -738,7 +731,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Delivery Fees:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23Q-vg-YKa">
-                                <rect key="frame" x="191.5" y="629.5" width="86" height="16"/>
+                                <rect key="frame" x="191.5" y="629.5" width="85.5" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.36074987050000001" green="0.3608062863" blue="0.36073756219999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -795,6 +788,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="000000 EGP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oI0-sN-PPc">
+                                <rect key="frame" x="304" y="655" width="78" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.35999999999999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -826,7 +826,6 @@
                             <constraint firstItem="IYp-d0-Uwe" firstAttribute="trailing" secondItem="FVL-rh-WNc" secondAttribute="trailing" constant="32.5" id="T1Z-Yf-w8q"/>
                             <constraint firstItem="rXn-gG-ZAU" firstAttribute="top" secondItem="bso-uJ-Rjg" secondAttribute="bottom" constant="62" id="ULM-B3-96l"/>
                             <constraint firstItem="IYp-d0-Uwe" firstAttribute="trailing" secondItem="5aN-sg-9Pe" secondAttribute="trailing" constant="12" id="VFb-ck-TC8"/>
-                            <constraint firstItem="23Q-vg-YKa" firstAttribute="centerX" secondItem="rXn-gG-ZAU" secondAttribute="centerX" id="WhI-Ld-Pai"/>
                             <constraint firstItem="v4V-R9-Ami" firstAttribute="width" secondItem="v4V-R9-Ami" secondAttribute="height" id="WlF-VH-MED"/>
                             <constraint firstItem="v4V-R9-Ami" firstAttribute="centerY" secondItem="Iic-K6-cdD" secondAttribute="centerY" id="XoR-0j-3uc"/>
                             <constraint firstItem="bso-uJ-Rjg" firstAttribute="top" secondItem="5aN-sg-9Pe" secondAttribute="bottom" constant="26" id="YgU-si-CfJ"/>
@@ -858,6 +857,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="tGv-mN-Zzb"/>
                     <connections>
+                        <outlet property="deliverFeesLabel" destination="FVL-rh-WNc" id="hQL-ts-a6f"/>
                         <outlet property="discountLabel" destination="oI0-sN-PPc" id="stx-Ug-pOb"/>
                         <outlet property="etaLabell" destination="hE1-Ct-B7u" id="IIf-yA-9TG"/>
                         <outlet property="notPromoCodeImage" destination="fye-wt-17K" id="6H7-Oi-MY4"/>
@@ -2208,7 +2208,7 @@
                                         <color key="textColor" white="0.35999999999999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mobile Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0uU-Uv-EL1" customClass="DisablPasteTF" customModule="Kershoman" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mobile Number" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0uU-Uv-EL1" customClass="DisablPasteTF" customModule="Kershoman" customModuleProvider="target">
                                         <rect key="frame" x="12" y="213.5" width="336" height="28.5"/>
                                         <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -3869,7 +3869,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="oNi-w7-R9P"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="Ijy-Mq-peA"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Address Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="WZx-67-n49">
@@ -3878,7 +3878,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="tel"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="b5T-Qf-ryZ"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="Hfw-mJ-GU7"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="aXI-uy-fUM">
@@ -3887,7 +3887,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" textContentType="street-address"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="cjn-DS-oQ9"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="Ke5-uL-iXe"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Street" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="ySE-08-wqN">
@@ -3896,7 +3896,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="tEs-ob-dco"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="5g0-8L-CnM"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Bulilding No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="lZK-ea-e0W">
@@ -3905,7 +3905,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="YdB-H5-RAg"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="Y5k-8V-OaH"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Floor No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="HVr-RV-O3I">
@@ -3914,7 +3914,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="BMa-On-BcA"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="FH5-KS-wJx"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Apartment No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Dq4-g3-Mw9">
+                                <rect key="frame" x="8" y="405" width="398" height="34"/>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="m26-WU-GHH"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Landmark" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="ejy-1L-n1S">
@@ -3923,7 +3932,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="mOV-2c-lva"/>
+                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="sD1-hJ-sAd"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pt2-zC-TOj">
@@ -3946,15 +3955,6 @@
                                     <action selector="saveButtonPressed:" destination="TYq-jW-clh" eventType="touchUpInside" id="R22-pY-pOi"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Apartment No." textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Dq4-g3-Mw9">
-                                <rect key="frame" x="8" y="405" width="398" height="34"/>
-                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="changePlaceHolderColor:" destination="TYq-jW-clh" eventType="editingChanged" id="sVr-7c-inj"/>
-                                </connections>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -3973,6 +3973,7 @@
                             <constraint firstItem="GPi-LN-IeW" firstAttribute="trailing" secondItem="ejy-1L-n1S" secondAttribute="trailing" constant="8" id="NTC-GO-U8e"/>
                             <constraint firstItem="aXI-uy-fUM" firstAttribute="leading" secondItem="GPi-LN-IeW" secondAttribute="leading" constant="8" id="Peg-RW-39k"/>
                             <constraint firstItem="lZK-ea-e0W" firstAttribute="leading" secondItem="GPi-LN-IeW" secondAttribute="leading" constant="8" id="WJE-oU-6pb"/>
+                            <constraint firstItem="GPi-LN-IeW" firstAttribute="bottom" secondItem="Pt2-zC-TOj" secondAttribute="bottom" constant="257" id="Wi8-2d-5ZX"/>
                             <constraint firstAttribute="trailing" secondItem="Pt2-zC-TOj" secondAttribute="trailing" constant="73" id="Ytq-Rh-gsQ"/>
                             <constraint firstItem="aXI-uy-fUM" firstAttribute="top" secondItem="WZx-67-n49" secondAttribute="bottom" constant="14" id="ZiC-xP-0sx"/>
                             <constraint firstItem="GPi-LN-IeW" firstAttribute="trailing" secondItem="ySE-08-wqN" secondAttribute="trailing" constant="8" id="bP6-qy-vOK"/>
@@ -4002,7 +4003,6 @@
                         <outlet property="landmarkTF" destination="ejy-1L-n1S" id="axO-hO-nwT"/>
                         <outlet property="saveButton" destination="Pt2-zC-TOj" id="fdQ-ZJ-fG1"/>
                         <outlet property="streerTF" destination="ySE-08-wqN" id="qIh-qq-EIT"/>
-                        <outlet property="textfields" destination="ejy-1L-n1S" id="7yV-lb-hh0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="his-Rw-p2i" userLabel="First Responder" sceneMemberID="firstResponder"/>

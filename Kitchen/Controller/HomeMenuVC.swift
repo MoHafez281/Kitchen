@@ -231,8 +231,7 @@ extension HomeMenuVC {
     
     func getMenu() {
         
-//      To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories            SVProgressHUD will appear
-        
+//      To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories SVProgressHUD will appear
         if HomeMenuVC.dismissSVProgrssBar == 1 {
             showSVProgress()
         } else if HomeMenuVC.dismissSVProgrssBar == 2 {
@@ -262,7 +261,7 @@ extension HomeMenuVC {
                         self.displayAlertMessage(title: "Error", messageToDisplay: menusMessage as! String)
                         
                     } else {
-//                      To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between                       categories SVProgressHUD will appear
+//                      To check user if clicked on added to cart or Fav button, so SVProgressHUD not be showen, else if user chosse between categories SVProgressHUD will appear
                         if HomeMenuVC.dismissSVProgrssBar == 1 {
          
                             self.dismissSVProgress()
