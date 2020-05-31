@@ -2471,7 +2471,7 @@
             <objects>
                 <viewController id="C6a-dk-2FG" customClass="SummaryVC" customModule="Kershoman" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IOv-yu-Vrt">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To be delivered in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CRD-jR-0Eo">
@@ -4698,7 +4698,7 @@
         <segue reference="gUE-hO-U0H"/>
         <segue reference="6FC-dS-CcM"/>
         <segue reference="IJX-72-ZrM"/>
-        <segue reference="YkR-rO-9ju"/>
+        <segue reference="rRh-L0-UYy"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="InternetConnectionIssue" width="32" height="32"/>
