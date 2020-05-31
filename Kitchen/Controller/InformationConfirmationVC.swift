@@ -234,8 +234,8 @@ class InformationConfirmationVC: UIViewController , UITextFieldDelegate {
             if (nowRadioButton.isSelected) {
                 
                 vc.craetionTime = formatDateToSend(date: Date()) + " " + formatTime(date: Date())
-//                vc.orderTime = "\(eta + 30) Minutes"
-                                vc.orderTime = formatDateToSend(date: Date()) + " " + formatTime(date: Calendar.current.date(byAdding: .minute, value: 90, to: Date())!)
+                vc.orderTime = "\(eta + 30) Minutes"
+//                                vc.orderTime = formatDateToSend(date: Date()) + " " + formatTime(date: Calendar.current.date(byAdding: .minute, value: 90, to: Date())!)
                 
             } else {
                 
